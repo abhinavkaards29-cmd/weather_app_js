@@ -1,4 +1,4 @@
-const apiKey = "YOUR_API_KEY_HERE"; // 🔑 OpenWeatherMap API key
+const apiKey = "21c37b3cf3fc437adbbab13394d14186"; // 🔑 OpenWeatherMap API key
 
 // AUTO THEME
 const themeToggle = document.getElementById("themeToggle");
