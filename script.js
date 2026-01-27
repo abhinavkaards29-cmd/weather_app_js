@@ -1,59 +1,95 @@
-// 🔑 Replace ONLY this value
+// 🔑 PUT YOUR API KEY HERE
 const API_KEY = "21c37b3cf3fc437adbbab13394d14186";
 
-// 🌗 THEME HANDLING
+// 🌗 THEME SYSTEM
 const themeSelect = document.getElementById("themeSelect");
 
 function applyTheme(theme) {
   if (theme === "dark") {
-    document.documentElement.className = "dark";
-  } else if (theme === "light") {
-    document.documentElement.className = "light";
+    document.body.classList.add("dark");
   } else {
-    document.documentElement.className = "";
+    document.body.classList.remove("dark");
   }
 }
 
 themeSelect.addEventListener("change", () => {
   localStorage.setItem("theme", themeSelect.value);
-  applyTheme(themeSelect.value);
+
+  if (themeSelect.value === "system") {
+    applyTheme(window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+  } else {
+    applyTheme(themeSelect.value);
+  }
 });
 
-// Load saved theme
+// Load theme
 const savedTheme = localStorage.getItem("theme") || "system";
 themeSelect.value = savedTheme;
-applyTheme(savedTheme);
+if (savedTheme === "system") {
+  applyTheme(window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+} else {
+  applyTheme(savedTheme);
+}
 
-// 🌦️ WEATHER FETCH
-function getWeather() {
+// 🔍 CITY SEARCH
+async function getWeather() {
   const city = document.getElementById("cityInput").value;
-  const resultBox = document.getElementById("weatherResult");
+  if (!city) return alert("Enter city name");
 
-  if (city === "") {
-    alert("Please enter a city name");
-    return;
+  document.getElementById("loader").classList.remove("hidden");
+
+  try {
+    const res = await fetch(
+      `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`
+    );
+    if (!res.ok) throw new Error();
+
+    const data = await res.json();
+    showWeather(data);
+  } catch {
+    alert("City not found");
+  } finally {
+    document.getElementById("loader").classList.add("hidden");
   }
+}
 
-  fetch(
-    `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`
-  )
-    .then((res) => res.json())
-    .then((data) => {
-      if (data.cod !== 200) {
-        alert("City not found");
-        return;
-      }
+// 📍 GPS WEATHER
+function getLocationWeather() {
+  if (!navigator.geolocation) return alert("GPS not supported");
 
-      document.getElementById("cityName").innerText = data.name;
-      document.getElementById("temperature").innerText =
-        `🌡️ ${Math.round(data.main.temp)}°C`;
-      document.getElementById("condition").innerText =
-        `☁️ ${data.weather[0].description}`;
+  navigator.geolocation.getCurrentPosition(async (pos) => {
+    const { latitude, longitude } = pos.coords;
 
-      resultBox.classList.remove("hidden");
-      resultBox.classList.add("slide-up");
-    })
-    .catch(() => {
-      alert("Something went wrong");
-    });
+    document.getElementById("loader").classList.remove("hidden");
+
+    try {
+      const res = await fetch(
+        `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${API_KEY}&units=metric`
+      );
+      const data = await res.json();
+      showWeather(data);
+    } catch {
+      alert("Location error");
+    } finally {
+      document.getElementById("loader").classList.add("hidden");
+    }
+  });
+}
+
+// 📊 DISPLAY
+function showWeather(data) {
+  document.getElementById("cityName").innerText = data.name;
+  document.getElementById("temperature").innerText = `🌡️ ${Math.round(data.main.temp)}°C`;
+  document.getElementById("condition").innerText = `☁️ ${data.weather[0].description}`;
+  document.getElementById("weatherResult").classList.remove("hidden");
+}
+
+// ⌨ ENTER KEY
+document.getElementById("cityInput").addEventListener("keydown", e => {
+  if (e.key === "Enter") getWeather();
+});
+
+// 📱 PWA
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("service-worker.js");
 }
