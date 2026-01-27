@@ -2,44 +2,39 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Weather App</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
+  <!-- Theme Toggle -->
+  <div class="theme-toggle">
+    <select id="themeSelect">
+      <option value="system">System</option>
+      <option value="light">Light</option>
+      <option value="dark">Dark</option>
+    </select>
+  </div>
 
-  <div class="app">
-    <header>
-      <h1>Weather</h1>
+  <!-- App Container -->
+  <div class="container fade-in">
+    <h1>Weather App</h1>
 
-      <select id="themeToggle">
-        <option value="system">Auto</option>
-        <option value="light">Light</option>
-        <option value="dark">Dark</option>
-      </select>
-    </header>
-
-    <div class="search-box">
+    <div class="input-box">
       <input type="text" id="cityInput" placeholder="Enter city name" />
       <button onclick="getWeather()">Search</button>
     </div>
 
-    <div class="weather-card" id="weatherCard">
-      <h2 id="cityName">—</h2>
-      <p id="description">—</p>
-
-      <div class="temp">
-        <span id="temperature">—</span>°C
-      </div>
-
-      <div class="details">
-        <div>💧 Humidity: <span id="humidity">—</span>%</div>
-        <div>🌬 Wind: <span id="wind">—</span> km/h</div>
-      </div>
+    <!-- Weather Result -->
+    <div id="weatherResult" class="weather hidden">
+      <h2 id="cityName"></h2>
+      <p id="temperature"></p>
+      <p id="condition"></p>
     </div>
   </div>
 
+  <!-- Script -->
   <script src="script.js"></script>
 </body>
 </html>
