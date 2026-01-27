@@ -1,30 +1,86 @@
-/* Glass container */
-.container {
-  width: 340px;
-  padding: 22px;
-  border-radius: 18px;
-  background: rgba(255, 255, 255, 0.25);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.25);
-  border: 1px solid rgba(255,255,255,0.3);
-  transition: all 0.4s ease;
-}
-
-body {
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: linear-gradient(135deg, #60a5fa, #2563eb);
-  font-family: system-ui, -apple-system, BlinkMacSystemFont;
+:root {
+  --bg: linear-gradient(135deg, #6a85f1, #89f7fe);
+  --card: rgba(255,255,255,0.35);
+  --text: #000;
 }
 
 body.dark {
-  background: linear-gradient(135deg, #020617, #0f172a);
+  --bg: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  --card: rgba(30,30,30,0.55);
+  --text: #fff;
 }
 
-body.dark .container {
-  background: rgba(30, 41, 59, 0.6);
+body {
+  margin: 0;
+  height: 100vh;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro", sans-serif;
+  color: var(--text);
+  transition: background 0.5s ease;
+}
+
+.card {
+  width: 340px;
+  padding: 26px;
+  border-radius: 22px;
+  background: var(--card);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+  text-align: center;
+  animation: float 0.8s ease;
+}
+
+@keyframes float {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  border: none;
+  margin: 12px 0;
+  font-size: 16px;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  border-radius: 14px;
+  border: none;
+  margin-top: 10px;
+  font-size: 16px;
+  background: #007aff;
   color: white;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+button:active {
+  transform: scale(0.97);
+}
+
+button.secondary {
+  background: rgba(0,0,0,0.15);
+}
+
+.themes {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16px;
+}
+
+.themes button {
+  width: 32%;
+  background: rgba(255,255,255,0.25);
+  color: var(--text);
+}
+
+#result {
+  margin-top: 20px;
+  font-size: 18px;
 }
