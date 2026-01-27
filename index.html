@@ -1,40 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Weather App</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
+/* Glass container */
+.container {
+  width: 340px;
+  padding: 22px;
+  border-radius: 18px;
 
-<body>
-  <!-- Theme Toggle -->
-  <div class="theme-toggle">
-    <select id="themeSelect">
-      <option value="system">System</option>
-      <option value="light">Light</option>
-      <option value="dark">Dark</option>
-    </select>
-  </div>
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
 
-  <!-- App Container -->
-  <div class="container fade-in">
-    <h1>Weather App</h1>
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.3);
 
-    <div class="input-box">
-      <input type="text" id="cityInput" placeholder="Enter city name" />
-      <button onclick="getWeather()">Search</button>
-    </div>
+  transition: background 0.4s ease, box-shadow 0.4s ease;
+}
 
-    <!-- Weather Result -->
-    <div id="weatherResult" class="weather hidden">
-      <h2 id="cityName"></h2>
-      <p id="temperature"></p>
-      <p id="condition"></p>
-    </div>
-  </div>
-
-  <!-- Script -->
-  <script src="script.js"></script>
-</body>
-</html>
+body.dark .container {
+  background: rgba(30, 41, 59, 0.6);
+}
