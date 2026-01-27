@@ -1,37 +1,59 @@
 const API_KEY = "21c37b3cf3fc437adbbab13394d14186";
 
-function searchWeather() {
+// 🔍 SEARCH
+window.searchWeather = function () {
   const city = document.getElementById("cityInput").value.trim();
-  if (!city) return alert("Enter a city");
+  if (!city) {
+    alert("Enter a city name");
+    return;
+  }
 
-  fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`)
-    .then(res => res.json())
-    .then(showWeather)
-    .catch(() => alert("City not found"));
-}
+  fetchWeather(
+    `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`
+  );
+};
 
-function useMyLocation() {
-  navigator.geolocation.getCurrentPosition(pos => {
-    const { latitude, longitude } = pos.coords;
-    fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${API_KEY}&units=metric`)
-      .then(res => res.json())
-      .then(showWeather);
-  });
-}
+// 📍 GPS
+window.useMyLocation = function () {
+  if (!navigator.geolocation) {
+    alert("Geolocation not supported");
+    return;
+  }
 
-function showWeather(data) {
-  document.getElementById("result").innerHTML = `
-    <strong>${data.name}</strong><br>
-    🌡 ${data.main.temp}°C<br>
-    ${data.weather[0].description}
-  `;
-}
+  navigator.geolocation.getCurrentPosition(
+    (pos) => {
+      const { latitude, longitude } = pos.coords;
+      fetchWeather(
+        `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${API_KEY}&units=metric`
+      );
+    },
+    () => alert("Location permission denied")
+  );
+};
 
-function setTheme(mode) {
+// 🌗 THEME
+window.setTheme = function (mode) {
   if (mode === "auto") {
     document.body.className =
       window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "";
   } else {
     document.body.className = mode;
   }
+};
+
+// 🌦 FETCH + DISPLAY
+function fetchWeather(url) {
+  fetch(url)
+    .then(res => {
+      if (!res.ok) throw new Error("API error");
+      return res.json();
+    })
+    .then(data => {
+      document.getElementById("result").innerHTML = `
+        <strong>${data.name}</strong><br>
+        🌡 ${Math.round(data.main.temp)}°C<br>
+        ${data.weather[0].description}
+      `;
+    })
+    .catch(() => alert("Weather not found"));
 }
