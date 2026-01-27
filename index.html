@@ -3,34 +3,29 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Weather App</title>
+  <title>Weather</title>
 
-  <!-- CSS -->
   <link rel="stylesheet" href="style.css" />
-
-  <!-- PWA -->
   <link rel="manifest" href="manifest.json" />
-  <meta name="theme-color" content="#0f172a" />
 </head>
 
 <body>
-  <div class="container">
-    <h1>🌤 Weather</h1>
 
-    <div class="search">
-      <input id="cityInput" placeholder="Enter city name" />
-      <button onclick="getWeather()">Search</button>
-    </div>
+  <div class="card">
+    <h1>☁️ Weather</h1>
 
-    <button class="gps" onclick="getLocation()">📍 Use My Location</button>
+    <input id="cityInput" type="text" placeholder="Search city…" />
+    <button onclick="searchWeather()">Search</button>
 
-    <div id="weather"></div>
+    <button class="secondary" onclick="useMyLocation()">📍 Use My Location</button>
 
-    <div class="theme-toggle">
+    <div class="themes">
       <button onclick="setTheme('light')">☀️</button>
       <button onclick="setTheme('dark')">🌙</button>
       <button onclick="setTheme('auto')">🌓</button>
     </div>
+
+    <div id="result"></div>
   </div>
 
   <script src="script.js"></script>
