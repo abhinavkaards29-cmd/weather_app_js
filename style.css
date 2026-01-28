@@ -1,103 +1,204 @@
+/* ===== RESET ===== */
 * {
   box-sizing: border-box;
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro", sans-serif;
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
+/* ===== BODY & BACKGROUND ===== */
 body {
-  margin: 0;
   min-height: 100vh;
-  background: linear-gradient(135deg,#020617,#1e293b,#020617);
+  background: linear-gradient(135deg, #0a84ff, #003f88);
   display: flex;
   justify-content: center;
   align-items: center;
   transition: background 0.6s ease;
+  overflow-x: hidden;
 }
 
-body.light {
-  background: linear-gradient(135deg,#e0f2fe,#f8fafc);
+/* Weather background states (animated later) */
+body.clear {
+  background: linear-gradient(135deg, #4facfe, #00f2fe);
 }
 
+body.clouds {
+  background: linear-gradient(135deg, #8e9eab, #eef2f3);
+}
+
+body.rain {
+  background: linear-gradient(135deg, #667db6, #0082c8, #667db6);
+}
+
+/* ===== APP CARD ===== */
 .app {
-  width: 360px;
-  padding: 26px;
-  border-radius: 28px;
-  color: white;
+  width: 100%;
+  max-width: 420px;
+  padding: 22px;
+  border-radius: 26px;
 }
 
+/* Glass effect */
 .glass {
-  background: rgba(255,255,255,0.18);
-  backdrop-filter: blur(26px);
-  box-shadow: 0 35px 80px rgba(0,0,0,.5);
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
+  color: #fff;
 }
 
-body.light .glass {
-  background: rgba(255,255,255,.75);
-  color: #020617;
+/* ===== TITLE ===== */
+.title {
+  text-align: center;
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 16px;
 }
 
-input,button {
+/* ===== INPUT ===== */
+input {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 16px;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  margin-bottom: 12px;
+}
+
+/* ===== BUTTONS ===== */
+.btn {
   width: 100%;
   padding: 14px;
-  margin-top: 12px;
   border-radius: 18px;
   border: none;
   font-size: 16px;
+  cursor: pointer;
+  margin-bottom: 12px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
-button {
+.btn:active {
+  transform: scale(0.97);
+}
+
+.primary {
   background: #0a84ff;
-  color: #fff;
+  color: white;
+}
+
+.glass-btn {
+  background: rgba(255, 255, 255, 0.25);
+  color: white;
+}
+
+.ai-btn {
+  background: linear-gradient(135deg, #ff7a18, #ffb347);
+  color: #000;
+  font-weight: 600;
+}
+
+/* ===== ACTION ICON BUTTONS ===== */
+.actions {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.icon-btn {
+  width: 32%;
+  padding: 12px;
+  border-radius: 14px;
+  border: none;
+  background: rgba(255, 255, 255, 0.25);
+  font-size: 18px;
   cursor: pointer;
 }
 
-button.secondary {
-  background: rgba(255,255,255,.25);
-}
-
-.theme-switch {
-  display: flex;
-  gap: 10px;
-  margin-top: 14px;
-}
-
-.theme-switch button {
-  flex: 1;
-}
-
-#current {
-  text-align: center;
-  margin-top: 18px;
-}
-
-#forecast {
-  display: flex;
-  gap: 10px;
-  overflow-x: auto;
-}
-
-.forecast-card {
-  min-width: 90px;
-  padding: 10px;
-  background: rgba(255,255,255,.25);
-  border-radius: 16px;
-  text-align: center;
-}
-
-#map {
-  height: 220px;
+/* ===== RESULT SECTION ===== */
+.result {
+  margin-top: 12px;
+  padding: 14px;
   border-radius: 20px;
-  margin-top: 14px;
+  background: rgba(0, 0, 0, 0.25);
+  animation: fadeIn 0.4s ease;
 }
 
-#favorites li {
-  list-style: none;
-  padding: 8px;
+.hidden {
+  display: none;
+}
+
+#cityName {
+  font-size: 22px;
+  margin-bottom: 6px;
+}
+
+#temp {
+  font-size: 38px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+#condition {
+  text-transform: capitalize;
+}
+
+/* ===== DETAILS ===== */
+.details {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+/* ===== EXTRA ACTIONS ===== */
+.extra {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12px;
+}
+
+.extra button {
+  width: 48%;
+  padding: 12px;
+  border-radius: 14px;
+  border: none;
+  background: rgba(255, 255, 255, 0.25);
+  color: white;
   cursor: pointer;
 }
 
-#alerts {
+/* ===== MAP ===== */
+.map {
   margin-top: 14px;
-  padding: 10px;
-  border-radius: 16px;
-  background: rgba(255,69,0,.25);
+  height: 220px;
+  border-radius: 18px;
+  background: rgba(0, 0, 0, 0.25);
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== DESKTOP VIEW ===== */
+@media (min-width: 768px) {
+  body {
+    padding: 20px;
+  }
+
+  .app {
+    max-width: 600px;
+  }
+
+  .details {
+    font-size: 16px;
+  }
 }
