@@ -6,65 +6,50 @@
   <title>Weather Glass</title>
   <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
+  <main class="glass">
 
-<main class="app glass fade-in">
+    <h1>☁️ Weather Glass</h1>
 
-  <h1>☁️ Weather Glass</h1>
+    <!-- SEARCH -->
+    <input id="searchInput" placeholder="Search city, state, country" />
+    <button onclick="searchCity()">Search</button>
+    <button class="secondary" onclick="useMyLocation()">📍 Use My Location</button>
 
-  <!-- SEARCH -->
-  <input id="cityInput" placeholder="Search city, state, country" />
-  <div id="suggestions" class="suggestions hidden"></div>
+    <!-- CURRENT WEATHER -->
+    <section id="current" class="card hidden">
+      <h2 id="place"></h2>
+      <div class="temp" id="temp"></div>
+      <p id="desc"></p>
 
-  <button onclick="searchCity()">Search</button>
-  <button class="secondary" onclick="useMyLocation()">📍 Use My Location</button>
+      <div class="details">
+        <span id="feels"></span>
+        <span id="humidity"></span>
+        <span id="wind"></span>
+      </div>
+    </section>
 
-  <!-- CURRENT -->
-  <section id="weatherBox" class="hidden card">
-    <h2 id="place"></h2>
-    <div class="temp" id="temp"></div>
-    <p id="desc"></p>
+    <!-- 7 DAY FORECAST -->
+    <section id="forecast" class="card hidden">
+      <h3>📅 7-Day Forecast</h3>
+      <div id="days"></div>
+    </section>
 
-    <div class="details">
-      <span id="feels"></span>
-      <span id="humidity"></span>
-      <span id="wind"></span>
+    <!-- MAP -->
+    <section id="mapBox" class="card hidden">
+      <h3>📍 Location</h3>
+      <iframe id="map" loading="lazy"></iframe>
+    </section>
+
+    <!-- ACTIONS -->
+    <div class="actions">
+      <button onclick="saveFavourite()">⭐ Favourite</button>
+      <button onclick="setReminder()">⏰ Reminder</button>
     </div>
-  </section>
 
-  <!-- HOURLY -->
-  <section id="hourlyBox" class="hidden card">
-    <h3>⏱ Hourly Forecast</h3>
-    <div id="hourly" class="scroll"></div>
-  </section>
+  </main>
 
-  <!-- DAILY -->
-  <section id="dailyBox" class="hidden card">
-    <h3>📅 7-Day Forecast</h3>
-    <div id="daily" class="scroll"></div>
-  </section>
-
-  <!-- AQI -->
-  <section id="aqiBox" class="hidden card">
-    <h3>🫁 Air Quality</h3>
-    <p id="aqiValue"></p>
-    <p id="aqiHealth"></p>
-  </section>
-
-  <!-- MAP -->
-  <section id="mapBox" class="hidden card">
-    <h3>📍 Location</h3>
-    <iframe id="map"></iframe>
-  </section>
-
-  <!-- ACTIONS -->
-  <div class="actions">
-    <button onclick="saveFavourite()">⭐ Favourite</button>
-    <button onclick="setReminder()">⏰ Reminder</button>
-  </div>
-
-</main>
-
-<script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
