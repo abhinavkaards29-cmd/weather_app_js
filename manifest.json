@@ -1,13 +1,13 @@
 {
-  "name": "Weather Glass",
-  "short_name": "Weather",
-  "start_url": "./",
+  "name": "Weather AI",
+  "short_name": "WeatherAI",
+  "start_url": ".",
   "display": "standalone",
-  "background_color": "#020617",
+  "background_color": "#0a84ff",
   "theme_color": "#0a84ff",
   "icons": [
     {
-      "src": "apple-icon-180x180-removebg-preview.png",
+      "src": "icons/apple-icon-180x180-removebg-preview.png",
       "sizes": "180x180",
       "type": "image/png"
     }
