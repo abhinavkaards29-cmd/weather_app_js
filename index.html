@@ -2,51 +2,53 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Weather AI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Weather Glass</title>
 
   <link rel="stylesheet" href="style.css" />
-  <link rel="icon" href="favicon.ico" />
 </head>
 
 <body>
-  <div class="app glass fade-in">
 
-    <h1 class="title">☁️ Weather AI</h1>
-    <p class="subtitle">Smart weather with AI insights</p>
+  <main class="app glass">
+    <h1>☁️ Weather Glass</h1>
 
     <input
       id="cityInput"
-      placeholder="City, State, Country (e.g. Kolkata, WB, IN)"
+      placeholder="Search city, state, country"
+      autocomplete="off"
     />
 
-    <button class="btn primary" onclick="searchCity()">Search</button>
-    <button class="btn glass-btn" onclick="useMyLocation()">📍 Use My Location</button>
+    <button class="primary" onclick="searchCity()">Search</button>
+    <button class="secondary" onclick="useMyLocation()">📍 Use My Location</button>
 
-    <div class="themes">
-      <button onclick="setTheme('clear')">☀️</button>
-      <button onclick="setTheme('clouds')">☁️</button>
-      <button onclick="setTheme('rain')">🌧️</button>
-    </div>
-
-    <section id="weather" class="hidden">
-      <h2 id="place"></h2>
+    <!-- Weather -->
+    <section id="weatherBox" class="hidden">
+      <h2 id="cityName"></h2>
       <div class="temp" id="temp"></div>
-      <div class="desc" id="desc"></div>
+      <p id="condition"></p>
 
       <div class="details">
         <span id="feels"></span>
         <span id="humidity"></span>
         <span id="wind"></span>
       </div>
-
-      <button class="btn ai" onclick="runAI()">🤖 AI Weather Insight</button>
-      <button class="btn ai" onclick="runVoice()">🎙️ AI Voice</button>
     </section>
 
-  </div>
+    <!-- Map -->
+    <div id="mapCard" class="glass-card hidden">
+      <h3>📍 Location</h3>
+      <iframe id="mapFrame"></iframe>
+    </div>
 
-  <script src="ai-voice.js"></script>
+    <!-- Actions -->
+    <div class="actions">
+      <button onclick="saveFavorite()">⭐ Favourite</button>
+      <button onclick="setReminder()">🔔 Reminder</button>
+    </div>
+
+  </main>
+
   <script src="script.js"></script>
 </body>
 </html>
