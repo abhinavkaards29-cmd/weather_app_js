@@ -1,127 +1,72 @@
-* {
-  box-sizing: border-box;
-  font-family: system-ui, -apple-system;
-}
-
 body {
   margin: 0;
-  min-height: 100vh;
-  background: linear-gradient(180deg,#0f2027,#203a43,#2c5364);
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  font-family: system-ui, sans-serif;
+  background: linear-gradient(120deg,#0f2027,#203a43,#2c5364);
   color: white;
-}
-
-.app {
-  width: 390px;
-  padding: 20px;
-  border-radius: 28px;
 }
 
 .glass {
-  background: rgba(255,255,255,0.14);
-  backdrop-filter: blur(18px);
-  box-shadow: 0 40px 80px rgba(0,0,0,.45);
+  max-width: 420px;
+  margin: 30px auto;
+  padding: 20px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.12);
+  backdrop-filter: blur(16px);
 }
 
-.fade-in {
-  animation: fadeIn .8s ease forwards;
-}
-
-@keyframes fadeIn {
-  from {opacity:0; transform:translateY(20px)}
-  to {opacity:1; transform:none}
-}
-
-h1, h3 {
-  text-align: center;
-}
-
-input {
+input, button {
   width: 100%;
-  padding: 14px;
-  border-radius: 14px;
+  padding: 12px;
+  margin-top: 10px;
+  border-radius: 12px;
   border: none;
-  margin-bottom: 6px;
 }
 
 button {
-  width: 100%;
-  padding: 12px;
-  margin-top: 6px;
-  border-radius: 14px;
-  border: none;
-  background: #2563eb;
+  background: #2f80ed;
   color: white;
-  cursor: pointer;
+  font-size: 16px;
 }
 
-.secondary {
-  background: rgba(255,255,255,.25);
-}
-
-.hidden {
-  display: none;
+button.secondary {
+  background: rgba(255,255,255,0.25);
 }
 
 .card {
-  margin-top: 16px;
-  padding: 14px;
-  border-radius: 20px;
-  background: rgba(255,255,255,.15);
+  margin-top: 20px;
+  padding: 15px;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.15);
 }
 
 .temp {
-  font-size: 50px;
-  font-weight: 300;
+  font-size: 48px;
+  margin: 10px 0;
 }
 
-.details {
-  display: flex;
-  justify-content: space-between;
-  font-size: 13px;
+.details span {
+  display: block;
+  opacity: 0.85;
 }
 
-.scroll {
-  display: flex;
-  gap: 10px;
-  overflow-x: auto;
-}
-
-.hour, .day {
-  min-width: 72px;
-  padding: 10px;
-  border-radius: 14px;
-  background: rgba(255,255,255,.2);
-  text-align: center;
-  font-size: 12px;
+#days div {
+  margin: 6px 0;
+  opacity: 0.9;
 }
 
 iframe {
   width: 100%;
-  height: 180px;
-  border-radius: 14px;
+  height: 220px;
+  border-radius: 12px;
   border: none;
 }
 
 .actions {
   display: flex;
   gap: 10px;
-  margin-top: 14px;
+  margin-top: 20px;
 }
 
-.suggestions {
-  background: rgba(255,255,255,.2);
-  border-radius: 14px;
-  overflow: hidden;
-}
-
-.suggestions div {
-  padding: 10px;
-  cursor: pointer;
-}
-
-.suggestions div:hover {
-  background: rgba(255,255,255,.3);
+.hidden {
+  display: none;
 }
