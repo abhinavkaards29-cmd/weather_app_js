@@ -2,52 +2,43 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Weather Glass</title>
-
   <link rel="stylesheet" href="style.css" />
 </head>
-
 <body>
 
-  <main class="app glass">
+  <div class="glass">
+
     <h1>☁️ Weather Glass</h1>
 
-    <input
-      id="cityInput"
-      placeholder="Search city, state, country"
-      autocomplete="off"
-    />
-
-    <button class="primary" onclick="searchCity()">Search</button>
+    <input id="cityInput" placeholder="Search city, state, country" />
+    <button onclick="searchCity()">Search</button>
     <button class="secondary" onclick="useMyLocation()">📍 Use My Location</button>
 
-    <!-- Weather -->
-    <section id="weatherBox" class="hidden">
-      <h2 id="cityName"></h2>
+    <div id="weatherBox" class="hidden">
+      <h2 id="place"></h2>
       <div class="temp" id="temp"></div>
-      <p id="condition"></p>
+      <div id="desc"></div>
 
       <div class="details">
         <span id="feels"></span>
         <span id="humidity"></span>
         <span id="wind"></span>
       </div>
-    </section>
 
-    <!-- Map -->
-    <div id="mapCard" class="glass-card hidden">
-      <h3>📍 Location</h3>
-      <iframe id="mapFrame"></iframe>
+      <div class="card">
+        <h3>📍 Location</h3>
+        <iframe id="map" loading="lazy"></iframe>
+      </div>
+
+      <div class="actions">
+        <button onclick="saveFavourite()">⭐ Favourite</button>
+        <button onclick="setReminder()">⏰ Reminder</button>
+      </div>
     </div>
 
-    <!-- Actions -->
-    <div class="actions">
-      <button onclick="saveFavorite()">⭐ Favourite</button>
-      <button onclick="setReminder()">🔔 Reminder</button>
-    </div>
-
-  </main>
+  </div>
 
   <script src="script.js"></script>
 </body>
