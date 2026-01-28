@@ -2,22 +2,25 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Weather</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Weather App</title>
+
+  <!-- Leaflet Map -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+
+  <!-- Weather Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.12/css/weather-icons.min.css"/>
 
   <link rel="stylesheet" href="style.css" />
-  <link rel="manifest" href="manifest.json" />
 </head>
 
 <body>
-
-  <div class="card">
+  <div class="app">
     <h1>☁️ Weather</h1>
 
-    <input id="cityInput" type="text" placeholder="Search city…" />
+    <input id="searchInput" placeholder="City, State, Country" />
     <button onclick="searchWeather()">Search</button>
-
-    <button class="secondary" onclick="useMyLocation()">📍 Use My Location</button>
+    <button class="location" onclick="useLocation()">📍 Use My Location</button>
 
     <div class="themes">
       <button onclick="setTheme('light')">☀️</button>
@@ -25,9 +28,19 @@
       <button onclick="setTheme('auto')">🌓</button>
     </div>
 
-    <div id="result"></div>
+    <div id="weatherBox"></div>
+
+    <h3>5-Day Forecast</h3>
+    <div id="forecast"></div>
+
+    <h3>Map</h3>
+    <div id="map"></div>
+
+    <h3>⭐ Favorites</h3>
+    <ul id="favorites"></ul>
   </div>
 
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
