@@ -1,31 +1,18 @@
-// ================= CONFIG =================
 const WEATHER_KEY = "21c37b3cf3fc437adbbab13394d14186";
 
-// ================= STATE =================
 let currentCity = "";
 let currentWeatherText = "";
 
-// ================= WEATHER =================
-function searchCity() {
-  const city = document.getElementById("cityInput").value.trim();
-  if (!city) {
-    alert("Enter a city name");
-    return;
-  }
+async function searchCity() {
+  const city = cityInput.value.trim();
+  if (!city) return alert("Enter city");
   fetchWeather(`q=${city}`);
 }
 
 function useMyLocation() {
-  if (!navigator.geolocation) {
-    alert("Geolocation not supported");
-    return;
-  }
-
   navigator.geolocation.getCurrentPosition(
-    pos => {
-      fetchWeather(`lat=${pos.coords.latitude}&lon=${pos.coords.longitude}`);
-    },
-    () => alert("Location permission denied")
+    p => fetchWeather(`lat=${p.coords.latitude}&lon=${p.coords.longitude}`),
+    () => alert("Location denied")
   );
 }
 
@@ -35,71 +22,60 @@ async function fetchWeather(query) {
       `https://api.openweathermap.org/data/2.5/weather?${query}&units=metric&appid=${WEATHER_KEY}`
     );
 
-    const data = await res.json();
+    const d = await res.json();
+    if (d.cod !== 200) throw new Error("City not found");
 
-    if (data.cod !== 200) {
-      alert("City not found");
-      return;
-    }
-
-    currentCity = data.name;
+    currentCity = `${d.name}, ${d.sys.country}`;
     currentWeatherText = `
-Temperature ${data.main.temp}°C.
-Feels like ${data.main.feels_like}°C.
-Humidity ${data.main.humidity}%.
-Wind ${data.wind.speed} km per hour.
-Condition ${data.weather[0].description}.
-`;
+      Temperature ${d.main.temp}°C,
+      Feels like ${d.main.feels_like}°C,
+      Humidity ${d.main.humidity}%,
+      Wind ${d.wind.speed} km/h,
+      ${d.weather[0].description}
+    `;
 
-    document.getElementById("weatherResult").classList.remove("hidden");
-    document.getElementById("cityName").innerText = data.name;
-    document.getElementById("temp").innerText = Math.round(data.main.temp) + "°C";
-    document.getElementById("condition").innerText = data.weather[0].description;
-    document.getElementById("feels").innerText = "Feels like " + data.main.feels_like + "°C";
-    document.getElementById("humidity").innerText = "Humidity " + data.main.humidity + "%";
-    document.getElementById("wind").innerText = "Wind " + data.wind.speed + " km/h";
+    weatherResult.classList.remove("hidden");
+    cityName.innerText = currentCity;
+    temp.innerText = Math.round(d.main.temp) + "°C";
+    condition.innerText = d.weather[0].description;
+    feels.innerText = "Feels " + d.main.feels_like + "°C";
+    humidity.innerText = "Humidity " + d.main.humidity + "%";
+    wind.innerText = "Wind " + d.wind.speed + " km/h";
 
-    setWeatherBackground(data.weather[0].main.toLowerCase());
-
-  } catch (err) {
+  } catch (e) {
     alert("Network error");
-    console.error(err);
   }
-}
-
-// ================= UI =================
-function setTheme(theme) {
-  document.body.className = theme;
-}
-
-// ================= EXTRAS =================
-function saveFavorite() {
-  if (!currentCity) return;
-  localStorage.setItem("favoriteCity", currentCity);
-  alert("Favorite saved ⭐");
-}
-
-function enableAlerts() {
-  Notification.requestPermission().then(p => {
-    if (p === "granted") {
-      new Notification("Weather alerts enabled 🌦️");
-    }
-  });
 }
 
 function runAI() {
-  if (!currentWeatherText) return;
+  if (!currentWeatherText) return alert("Search weather first");
+  alert("AI Insight:\n" + currentWeatherText);
+}
+
+function runVoice() {
   if (typeof speak === "function") {
-    speak(`Weather update for ${currentCity}. ${currentWeatherText}`);
-  } else {
-    alert("AI voice not loaded");
+    speak(`Weather in ${currentCity}. ${currentWeatherText}`);
   }
 }
 
-// ================= EXPOSE TO HTML =================
+function saveFavorite() {
+  localStorage.setItem("fav", currentCity);
+  alert("Saved ⭐");
+}
+
+function enableAlerts() {
+  Notification.requestPermission();
+}
+
+function setTheme(t) {
+  document.body.className = t;
+}
+
+/* EXPOSE GLOBALS (CRITICAL) */
 window.searchCity = searchCity;
 window.useMyLocation = useMyLocation;
 window.runAI = runAI;
+window.runVoice = runVoice;
 window.saveFavorite = saveFavorite;
 window.enableAlerts = enableAlerts;
 window.setTheme = setTheme;
