@@ -1,4 +1,4 @@
-const WEATHER_KEY = "PUT_YOUR_OPENWEATHERMAP_API_KEY_HERE";
+const WEATHER_KEY = "21c37b3cf3fc437adbbab13394d14186";
 
 let currentWeatherText = "";
 let currentCity = "";
@@ -69,3 +69,9 @@ function runAI() {
     `Weather update for ${currentCity}. ${currentWeatherText}. Have a great day!`
   );
 }
+// expose functions to HTML
+window.searchCity = searchCity;
+window.useMyLocation = useMyLocation;
+window.runAI = runAI;
+window.saveFavorite = saveFavorite;
+window.enableAlerts = enableAlerts;
