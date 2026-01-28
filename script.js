@@ -62,7 +62,35 @@ function selectLocation(loc) {
 }
 
 function searchCity() {
-  if (cityInput.value) fetchSuggestions();
+  async function searchCity() {
+  const query = document.getElementById("cityInput").value.trim();
+  if (!query) {
+    alert("Enter city, area, or place name");
+    return;
+  }
+
+  try {
+    // Step 1: Geocoding (deep search)
+    const geoRes = await fetch(
+      `https://api.openweathermap.org/geo/1.0/direct?q=${encodeURIComponent(query)}&limit=1&appid=${WEATHER_KEY}`
+    );
+    const geoData = await geoRes.json();
+
+    if (!geoData.length) {
+      alert("Location not found");
+      return;
+    }
+
+    const { lat, lon, name, state, country } = geoData[0];
+
+    // Step 2: Fetch weather using lat/lon
+    fetchWeatherByCoords(lat, lon, name, state, country);
+
+  } catch (err) {
+    alert("Network error");
+    console.error(err);
+  }
+}
 }
 
 /* =====================
