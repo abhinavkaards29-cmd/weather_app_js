@@ -1,67 +1,84 @@
 const API_KEY = "21c37b3cf3fc437adbbab13394d14186";
 
-let weatherText = "";
+let currentCity = "";
 
-async function searchCity() {
-  const q = document.getElementById("cityInput").value.trim();
-  if (!q) return;
-
-  fetchWeather(`q=${encodeURIComponent(q)}`);
+/* SEARCH CITY */
+function searchCity() {
+  const city = cityInput.value.trim();
+  if (!city) return alert("Enter city name");
+  fetchWeather(`q=${city}`);
 }
 
+/* USE LOCATION */
 function useMyLocation() {
-  navigator.geolocation.getCurrentPosition(pos => {
-    fetchWeather(`lat=${pos.coords.latitude}&lon=${pos.coords.longitude}`);
-  });
+  navigator.geolocation.getCurrentPosition(
+    pos => fetchWeather(`lat=${pos.coords.latitude}&lon=${pos.coords.longitude}`),
+    () => alert("Location permission denied")
+  );
 }
 
+/* FETCH WEATHER */
 async function fetchWeather(query) {
   try {
     const res = await fetch(
       `https://api.openweathermap.org/data/2.5/weather?${query}&units=metric&appid=${API_KEY}`
     );
-    const d = await res.json();
-    if (d.cod !== 200) return;
 
-    document.getElementById("weather").classList.remove("hidden");
-    document.getElementById("place").innerText =
-      `${d.name}, ${d.sys.country}`;
-    document.getElementById("temp").innerText =
-      `${Math.round(d.main.temp)}°C`;
-    document.getElementById("desc").innerText =
-      d.weather[0].description;
+    if (!res.ok) throw new Error("Network error");
 
-    document.getElementById("feels").innerText =
-      `Feels ${Math.round(d.main.feels_like)}°C`;
-    document.getElementById("humidity").innerText =
-      `Humidity ${d.main.humidity}%`;
-    document.getElementById("wind").innerText =
-      `Wind ${d.wind.speed} km/h`;
-
-    weatherText =
-      `In ${d.name}, temperature is ${Math.round(d.main.temp)} degrees with ${d.weather[0].description}.`;
-
-    setTheme(d.weather[0].main.toLowerCase());
-  } catch {
-    console.warn("Network issue");
+    const data = await res.json();
+    renderWeather(data);
+  } catch (e) {
+    alert("Network error");
   }
 }
 
-function setTheme(type) {
-  const body = document.body;
-  if (type.includes("rain"))
-    body.style.background = "linear-gradient(135deg,#667db6,#0082c8)";
-  else if (type.includes("cloud"))
-    body.style.background = "linear-gradient(135deg,#bdc3c7,#2c3e50)";
-  else
-    body.style.background = "linear-gradient(135deg,#89f7fe,#66a6ff)";
+/* RENDER */
+function renderWeather(data) {
+  currentCity = data.name;
+
+  weatherBox.classList.remove("hidden");
+  mapCard.classList.remove("hidden");
+
+  cityName.textContent = `${data.name}, ${data.sys.country}`;
+  temp.textContent = `${Math.round(data.main.temp)}°C`;
+  condition.textContent = data.weather[0].description;
+
+  feels.textContent = `Feels ${Math.round(data.main.feels_like)}°C`;
+  humidity.textContent = `Humidity ${data.main.humidity}%`;
+  wind.textContent = `Wind ${data.wind.speed} km/h`;
+
+  mapFrame.src =
+    `https://www.google.com/maps?q=${data.coord.lat},${data.coord.lon}&z=10&output=embed`;
 }
 
-function runAI() {
-  alert(weatherText);
+/* FAVOURITE */
+function saveFavorite() {
+  if (!currentCity) return;
+  localStorage.setItem("favCity", currentCity);
+  alert("Saved ⭐");
 }
 
-function runVoice() {
-  if (!weatherText) return;
-  speak(weatherText);
+/* LOAD FAV */
+window.addEventListener("load", () => {
+  const fav = localStorage.getItem("favCity");
+  if (fav) {
+    cityInput.value = fav;
+    searchCity();
+  }
+});
+
+/* REMINDER */
+function setReminder() {
+  if (!currentCity) return;
+
+  Notification.requestPermission().then(p => {
+    if (p !== "granted") return;
+
+    setTimeout(() => {
+      new Notification("Weather Reminder 🌦️", {
+        body: `Check weather for ${currentCity}`
+      });
+    }, 10 * 60 * 1000);
+  });
 }
