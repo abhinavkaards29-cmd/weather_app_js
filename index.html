@@ -2,44 +2,58 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Weather App</title>
+  <title>Weather Glass</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- Icons -->
   <link rel="icon" href="favicon.ico">
-  <link rel="apple-touch-icon" sizes="180x180" href="apple-icon-180x180-removebg-preview.png">
+  <link rel="apple-touch-icon" href="apple-icon-180x180-removebg-preview.png">
 
   <!-- PWA -->
   <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0f172a">
 
-  <!-- Styles -->
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-  <div class="app glass">
-    <h1>☁️ Weather</h1>
+<div class="app glass">
+  <h1>🌦 Weather</h1>
 
-    <input id="cityInput" placeholder="Enter city name" />
-    <button onclick="searchWeather()">Search</button>
+  <input id="searchInput" placeholder="City, State, Country">
+  <button onclick="searchWeather()">Search</button>
+  <button class="secondary" onclick="useLocation()">📍 Use My Location</button>
 
-    <button class="secondary" onclick="useLocation()">📍 Use My Location</button>
-
-    <div class="theme-switch">
-      <button onclick="setTheme('light')">☀️</button>
-      <button onclick="setTheme('dark')">🌙</button>
-      <button onclick="setTheme('system')">🌓</button>
-    </div>
-
-    <div id="result" class="result"></div>
+  <div class="theme-switch">
+    <button onclick="setTheme('light')">☀️</button>
+    <button onclick="setTheme('dark')">🌙</button>
+    <button onclick="setTheme('auto')">🌓</button>
   </div>
 
-  <script src="script.js"></script>
+  <div id="current"></div>
 
-  <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('service-worker.js');
-    }
-  </script>
+  <h3>📅 5-Day Forecast</h3>
+  <div id="forecast"></div>
+
+  <h3>🗺 Map</h3>
+  <div id="map"></div>
+
+  <h3>⭐ Favorites</h3>
+  <ul id="favorites"></ul>
+
+  <div id="alerts"></div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="script.js"></script>
+
+<script>
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("service-worker.js");
+  }
+</script>
 </body>
 </html>
