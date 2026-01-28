@@ -164,3 +164,46 @@ function saveFavourite() {
 function setReminder() {
   alert("Reminder ready (Firebase later)");
 }
+async function fetchWeatherByCoords(lat, lon, name, state, country) {
+  try {
+    const res = await fetch(
+      `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${WEATHER_KEY}`
+    );
+
+    const data = await res.json();
+    if (data.cod !== 200) {
+      alert("Weather data not available");
+      return;
+    }
+
+    // Location text (city + state + country)
+    const locationText = `${name}${state ? ", " + state : ""}, ${country}`;
+
+    currentCity = locationText;
+    currentWeatherText = `
+Temperature ${data.main.temp}°C,
+Feels like ${data.main.feels_like}°C,
+Humidity ${data.main.humidity}%,
+Wind ${data.wind.speed} km/h,
+Condition ${data.weather[0].description}
+`;
+
+    // UI update (same as before)
+    document.getElementById("weatherResult").classList.remove("hidden");
+    document.getElementById("cityName").innerText = locationText;
+    document.getElementById("temp").innerText = `${Math.round(data.main.temp)}°C`;
+    document.getElementById("condition").innerText = data.weather[0].description;
+    document.getElementById("feels").innerText = `Feels ${data.main.feels_like}°C`;
+    document.getElementById("humidity").innerText = `Humidity ${data.main.humidity}%`;
+    document.getElementById("wind").innerText = `Wind ${data.wind.speed} km/h`;
+
+    // Map update (iframe)
+    updateMap(lat, lon);
+
+    setWeatherBackground(data.weather[0].main.toLowerCase());
+
+  } catch (err) {
+    alert("Network error");
+    console.error(err);
+  }
+}
