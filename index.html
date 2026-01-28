@@ -5,67 +5,58 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Weather AI</title>
 
-  <!-- PWA -->
+  <link rel="stylesheet" href="style.css" />
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#0a84ff" />
-
-  <!-- Icons -->
-  <link rel="icon" href="favicon.ico" />
-  <link rel="apple-touch-icon" href="apple-icon-180x180-removebg-preview.png" />
-
-  <!-- CSS -->
-  <link rel="stylesheet" href="style.css" />
 </head>
 
 <body class="clear">
 
-  <main class="app glass">
-    <h1 class="title">☁️ Weather AI</h1>
+<main class="app glass">
 
-    <!-- Search -->
-    <input id="cityInput" type="text" placeholder="Search city" />
+  <h1>☁️ Weather AI</h1>
 
-    <button class="btn primary" onclick="searchCity()">Search</button>
-    <button class="btn glass-btn" onclick="useMyLocation()">📍 Use My Location</button>
+  <input id="cityInput" placeholder="Search city, state, country" />
+  <button onclick="searchCity()">Search</button>
+  <button onclick="useMyLocation()">📍 Use My Location</button>
 
-    <!-- Theme buttons -->
-    <div class="actions">
-      <button onclick="setTheme('clear')">☀️</button>
-      <button onclick="setTheme('clouds')">☁️</button>
-      <button onclick="setTheme('rain')">🌧️</button>
-    </div>
+  <div class="actions">
+    <button onclick="setTheme('clear')">☀️</button>
+    <button onclick="setTheme('clouds')">☁️</button>
+    <button onclick="setTheme('rain')">🌧️</button>
+  </div>
 
-    <!-- Weather result -->
-    <section id="weatherResult" class="hidden">
-      <h2 id="cityName"></h2>
-      <p id="temp"></p>
-      <p id="condition"></p>
-      <p id="feels"></p>
-      <p id="humidity"></p>
-      <p id="wind"></p>
-    </section>
+  <section id="weatherResult" class="hidden">
+    <h2 id="cityName"></h2>
+    <p id="temp"></p>
+    <p id="condition"></p>
+    <p id="feels"></p>
+    <p id="humidity"></p>
+    <p id="wind"></p>
+  </section>
 
-    <!-- AI -->
-    <button class="btn ai-btn" onclick="runAI()">🤖 AI Weather Insight</button>
+  <button onclick="runAI()">🤖 AI Weather Insight</button>
+  <button onclick="runVoice()">🎤 AI Voice</button>
 
-    <!-- Extras -->
-    <div class="extra">
-      <button onclick="saveFavorite()">⭐ Save Favorite</button>
-      <button onclick="enableAlerts()">🔔 Alerts</button>
-    </div>
-  </main>
+  <div class="extra">
+    <button onclick="saveFavorite()">⭐ Save Favorite</button>
+    <button onclick="enableAlerts()">🔔 Alerts</button>
+  </div>
 
-  <!-- Scripts (ORDER MATTERS) -->
-  <script src="background.js"></script>
-  <script src="ai-voice.js"></script>
-  <script src="script.js"></script>
+</main>
 
-  <!-- Service Worker -->
-  <script>
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("service-worker.js");
-    }
-  </script>
+<!-- NORMAL scripts FIRST -->
+<script src="background.js"></script>
+<script src="ai-voice.js"></script>
+
+<!-- MAIN APP (NOT module) -->
+<script src="script.js"></script>
+
+<script>
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("service-worker.js");
+}
+</script>
 
 </body>
 </html>
