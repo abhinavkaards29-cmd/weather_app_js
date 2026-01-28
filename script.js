@@ -1,33 +1,20 @@
-/* =========================
-   CONFIG
-========================= */
+// ================= CONFIG =================
 const WEATHER_KEY = "21c37b3cf3fc437adbbab13394d14186";
 
-/* =========================
-   STATE
-========================= */
+// ================= STATE =================
 let currentCity = "";
 let currentWeatherText = "";
 
-/* =========================
-   SEARCH BY CITY
-========================= */
-async function searchCity() {
-  const input = document.getElementById("cityInput");
-  if (!input) return;
-
-  const city = input.value.trim();
+// ================= WEATHER =================
+function searchCity() {
+  const city = document.getElementById("cityInput").value.trim();
   if (!city) {
     alert("Enter a city name");
     return;
   }
-
   fetchWeather(`q=${city}`);
 }
 
-/* =========================
-   USE MY LOCATION
-========================= */
 function useMyLocation() {
   if (!navigator.geolocation) {
     alert("Geolocation not supported");
@@ -36,16 +23,12 @@ function useMyLocation() {
 
   navigator.geolocation.getCurrentPosition(
     pos => {
-      const { latitude, longitude } = pos.coords;
-      fetchWeather(`lat=${latitude}&lon=${longitude}`);
+      fetchWeather(`lat=${pos.coords.latitude}&lon=${pos.coords.longitude}`);
     },
     () => alert("Location permission denied")
   );
 }
 
-/* =========================
-   FETCH WEATHER
-========================= */
 async function fetchWeather(query) {
   try {
     const res = await fetch(
@@ -59,94 +42,64 @@ async function fetchWeather(query) {
       return;
     }
 
-    renderWeather(data);
+    currentCity = data.name;
+    currentWeatherText = `
+Temperature ${data.main.temp}°C.
+Feels like ${data.main.feels_like}°C.
+Humidity ${data.main.humidity}%.
+Wind ${data.wind.speed} km per hour.
+Condition ${data.weather[0].description}.
+`;
+
+    document.getElementById("weatherResult").classList.remove("hidden");
+    document.getElementById("cityName").innerText = data.name;
+    document.getElementById("temp").innerText = Math.round(data.main.temp) + "°C";
+    document.getElementById("condition").innerText = data.weather[0].description;
+    document.getElementById("feels").innerText = "Feels like " + data.main.feels_like + "°C";
+    document.getElementById("humidity").innerText = "Humidity " + data.main.humidity + "%";
+    document.getElementById("wind").innerText = "Wind " + data.wind.speed + " km/h";
+
+    setWeatherBackground(data.weather[0].main.toLowerCase());
+
   } catch (err) {
-    alert("Weather fetch failed");
+    alert("Network error");
     console.error(err);
   }
 }
 
-/* =========================
-   RENDER WEATHER
-========================= */
-function renderWeather(data) {
-  currentCity = data.name;
-
-  currentWeatherText = `
-Temperature ${Math.round(data.main.temp)}°C.
-Feels like ${Math.round(data.main.feels_like)}°C.
-Humidity ${data.main.humidity} percent.
-Wind speed ${data.wind.speed} kilometers per hour.
-Condition ${data.weather[0].description}.
-`;
-
-  document.getElementById("weatherResult")?.classList.remove("hidden");
-  document.getElementById("cityName").innerText = data.name;
-  document.getElementById("temp").innerText = `${Math.round(data.main.temp)}°C`;
-  document.getElementById("condition").innerText = data.weather[0].description;
-  document.getElementById("feels").innerText = `Feels ${Math.round(
-    data.main.feels_like
-  )}°C`;
-  document.getElementById("humidity").innerText = `Humidity ${data.main.humidity}%`;
-  document.getElementById("wind").innerText = `Wind ${data.wind.speed} km/h`;
-
-  // 🔥 Connect background animation safely
-  if (typeof setWeatherBackground === "function") {
-    setWeatherBackground(data.weather[0].main.toLowerCase());
-  }
+// ================= UI =================
+function setTheme(theme) {
+  document.body.className = theme;
 }
 
-/* =========================
-   FAVORITES (LOCAL)
-========================= */
+// ================= EXTRAS =================
 function saveFavorite() {
-  if (!currentCity) {
-    alert("Search a city first");
-    return;
-  }
-
+  if (!currentCity) return;
   localStorage.setItem("favoriteCity", currentCity);
   alert("Favorite saved ⭐");
 }
 
-/* =========================
-   ALERTS
-========================= */
 function enableAlerts() {
-  if (!("Notification" in window)) {
-    alert("Notifications not supported");
-    return;
-  }
-
-  Notification.requestPermission().then(permission => {
-    if (permission === "granted") {
+  Notification.requestPermission().then(p => {
+    if (p === "granted") {
       new Notification("Weather alerts enabled 🌦️");
     }
   });
 }
 
-/* =========================
-   AI WEATHER VOICE
-========================= */
 function runAI() {
-  if (!currentWeatherText) {
-    alert("Search weather first");
-    return;
-  }
-
+  if (!currentWeatherText) return;
   if (typeof speak === "function") {
     speak(`Weather update for ${currentCity}. ${currentWeatherText}`);
+  } else {
+    alert("AI voice not loaded");
   }
 }
 
-// ===============================
-// EXPOSE FUNCTIONS TO HTML
-// ===============================
+// ================= EXPOSE TO HTML =================
 window.searchCity = searchCity;
 window.useMyLocation = useMyLocation;
 window.runAI = runAI;
 window.saveFavorite = saveFavorite;
 window.enableAlerts = enableAlerts;
 window.setTheme = setTheme;
-
-
