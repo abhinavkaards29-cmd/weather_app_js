@@ -1,6 +1,7 @@
 const API_KEY = "21c37b3cf3fc437adbbab13394d14186";
 
 const cityInput = document.getElementById("cityInput");
+const suggestionsBox = document.getElementById("suggestions");
 const weatherBox = document.getElementById("weatherBox");
 
 const placeEl = document.getElementById("place");
@@ -12,6 +13,57 @@ const windEl = document.getElementById("wind");
 const mapEl = document.getElementById("map");
 
 let currentLocation = "";
+let debounceTimer = null;
+
+/* =====================
+   AUTOCOMPLETE SEARCH
+===================== */
+
+cityInput.addEventListener("input", () => {
+  clearTimeout(debounceTimer);
+  const q = cityInput.value.trim();
+  if (q.length < 2) {
+    suggestionsBox.classList.add("hidden");
+    return;
+  }
+
+  debounceTimer = setTimeout(() => fetchSuggestions(q), 350);
+});
+
+async function fetchSuggestions(query) {
+  const res = await fetch(
+    `https://api.openweathermap.org/geo/1.0/direct?q=${query}&limit=5&appid=${API_KEY}`
+  );
+
+  const data = await res.json();
+  if (!data.length) {
+    suggestionsBox.classList.add("hidden");
+    return;
+  }
+
+  suggestionsBox.innerHTML = "";
+  suggestionsBox.classList.remove("hidden");
+
+  data.forEach(loc => {
+    const item = document.createElement("div");
+    item.innerText = `${loc.name}${loc.state ? ", " + loc.state : ""}, ${loc.country}`;
+    item.onclick = () => selectLocation(loc);
+    suggestionsBox.appendChild(item);
+  });
+}
+
+function selectLocation(loc) {
+  cityInput.value = `${loc.name}${loc.state ? ", " + loc.state : ""}`;
+  suggestionsBox.classList.add("hidden");
+
+  currentLocation = `${loc.name}${loc.state ? ", " + loc.state : ""}, ${loc.country}`;
+  loadWeather(loc.lat, loc.lon);
+  loadMap(loc.lat, loc.lon);
+}
+
+/* =====================
+   MANUAL SEARCH BUTTON
+===================== */
 
 async function searchCity() {
   const q = cityInput.value.trim();
@@ -23,12 +75,12 @@ async function searchCity() {
 
   if (!geo.length) return alert("Location not found");
 
-  const { lat, lon, name, state, country } = geo[0];
-  currentLocation = `${name}${state ? ", " + state : ""}, ${country}`;
-
-  loadWeather(lat, lon);
-  loadMap(lat, lon);
+  selectLocation(geo[0]);
 }
+
+/* =====================
+   WEATHER
+===================== */
 
 async function loadWeather(lat, lon) {
   const data = await fetch(
@@ -46,10 +98,17 @@ async function loadWeather(lat, lon) {
   weatherBox.classList.remove("hidden");
 }
 
+/* =====================
+   MAP
+===================== */
+
 function loadMap(lat, lon) {
-  mapEl.src =
-    `https://www.google.com/maps?q=${lat},${lon}&z=13&output=embed`;
+  mapEl.src = `https://www.google.com/maps?q=${lat},${lon}&z=13&output=embed`;
 }
+
+/* =====================
+   LOCATION BUTTON
+===================== */
 
 function useMyLocation() {
   navigator.geolocation.getCurrentPosition(pos => {
@@ -58,11 +117,15 @@ function useMyLocation() {
   });
 }
 
+/* =====================
+   FAVOURITE & REMINDER
+===================== */
+
 function saveFavourite() {
   localStorage.setItem("favourite", currentLocation);
   alert("Saved ⭐");
 }
 
 function setReminder() {
-  alert("Reminder feature ready for Firebase ⏰");
+  alert("Reminder ready (Firebase later)");
 }
