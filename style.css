@@ -1,72 +1,100 @@
+* {
+  box-sizing: border-box;
+  font-family: system-ui, sans-serif;
+}
+
 body {
   margin: 0;
-  font-family: system-ui, sans-serif;
-  background: linear-gradient(120deg,#0f2027,#203a43,#2c5364);
-  color: white;
+  background: linear-gradient(120deg, #0f2027, #203a43, #2c5364);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.app {
+  width: 360px;
+  padding: 20px;
 }
 
 .glass {
-  max-width: 420px;
-  margin: 30px auto;
-  padding: 20px;
-  border-radius: 20px;
+  backdrop-filter: blur(18px);
   background: rgba(255,255,255,0.12);
-  backdrop-filter: blur(16px);
+  border-radius: 20px;
+  color: #fff;
 }
 
-input, button {
+h1 {
+  text-align: center;
+}
+
+input {
   width: 100%;
   padding: 12px;
-  margin-top: 10px;
   border-radius: 12px;
   border: none;
+  margin-bottom: 10px;
 }
 
 button {
-  background: #2f80ed;
-  color: white;
-  font-size: 16px;
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  border: none;
+  margin-bottom: 10px;
+  cursor: pointer;
 }
 
 button.secondary {
-  background: rgba(255,255,255,0.25);
+  background: rgba(255,255,255,0.2);
+  color: white;
 }
 
 .card {
-  margin-top: 20px;
+  background: rgba(0,0,0,0.25);
   padding: 15px;
   border-radius: 16px;
-  background: rgba(255,255,255,0.15);
+  margin-top: 12px;
+}
+
+.hidden {
+  display: none;
 }
 
 .temp {
   font-size: 48px;
-  margin: 10px 0;
+  font-weight: bold;
 }
 
 .details span {
   display: block;
-  opacity: 0.85;
+  font-size: 14px;
+  margin-top: 4px;
 }
 
-#days div {
-  margin: 6px 0;
-  opacity: 0.9;
+.scroll {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+}
+
+.scroll div {
+  min-width: 70px;
+  padding: 8px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 10px;
+  text-align: center;
 }
 
 iframe {
   width: 100%;
-  height: 220px;
-  border-radius: 12px;
+  height: 200px;
+  border-radius: 14px;
   border: none;
 }
 
 .actions {
   display: flex;
   gap: 10px;
-  margin-top: 20px;
-}
-
-.hidden {
-  display: none;
+  margin-top: 12px;
 }
