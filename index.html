@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
   <title>Weather AI</title>
 
   <!-- PWA -->
@@ -12,10 +11,7 @@
 
   <!-- Icons -->
   <link rel="icon" href="favicon.ico" />
-  <link
-    rel="apple-touch-icon"
-    href="apple-icon-180x180-removebg-preview.png"
-  />
+  <link rel="apple-touch-icon" href="apple-icon-180x180-removebg-preview.png" />
 
   <!-- CSS -->
   <link rel="stylesheet" href="style.css" />
@@ -23,85 +19,46 @@
 
 <body class="clear">
 
-  <!-- APP CONTAINER -->
   <main class="app glass">
+    <h1 class="title">☁️ Weather AI</h1>
 
-    <!-- Header -->
-    <header class="header">
-      <h1 class="title">☁️ Weather AI</h1>
-      <p class="subtitle">Smart weather with AI insights</p>
-    </header>
+    <input id="cityInput" type="text" placeholder="Search city" />
 
-    <!-- Search -->
-    <section class="search">
-      <input
-        id="cityInput"
-        type="text"
-        placeholder="Search city, state, country"
-        autocomplete="off"
-      />
+    <button class="btn primary" onclick="searchCity()">Search</button>
+    <button class="btn glass-btn" onclick="useMyLocation()">📍 Use My Location</button>
 
-      <button class="btn primary" onclick="searchCity()">
-        Search
-      </button>
-
-      <button class="btn glass-btn" onclick="useMyLocation()">
-        📍 Use My Location
-      </button>
-    </section>
-
-    <!-- Theme Controls -->
-    <section class="actions">
+    <div class="actions">
       <button class="icon-btn" onclick="setTheme('clear')">☀️</button>
       <button class="icon-btn" onclick="setTheme('clouds')">☁️</button>
       <button class="icon-btn" onclick="setTheme('rain')">🌧️</button>
-    </section>
+    </div>
 
-    <!-- Weather Result -->
     <section id="weatherResult" class="result hidden">
-      <h2 id="cityName">City</h2>
-      <p id="temp">--°C</p>
-      <p id="condition">Condition</p>
-
-      <div class="details">
-        <span id="feels">Feels like --°C</span>
-        <span id="humidity">Humidity --%</span>
-        <span id="wind">Wind -- km/h</span>
-      </div>
+      <h2 id="cityName"></h2>
+      <p id="temp"></p>
+      <p id="condition"></p>
     </section>
 
-    <!-- AI Section -->
-    <section class="ai">
-      <button class="btn ai-btn" onclick="runAI()">
-        🤖 AI Weather Insight
-      </button>
+    <button class="btn ai-btn" onclick="runAI()">🤖 AI Weather Insight</button>
 
-      <button class="btn ai-btn" onclick="speakWeather()">
-        🎙 AI Voice
-      </button>
-    </section>
-
-    <!-- Extra Actions -->
-    <section class="extra">
+    <div class="extra">
       <button onclick="saveFavorite()">⭐ Save Favorite</button>
       <button onclick="enableAlerts()">🔔 Alerts</button>
-    </section>
+    </div>
 
-    <!-- Map -->
-    <section id="map" class="map"></section>
-
+    <div id="map" class="map"></div>
   </main>
 
-  <!-- Background animations -->
+  <!-- Background effects -->
   <script src="background.js"></script>
 
-  <!-- AI Voice -->
+  <!-- Voice -->
   <script src="ai-voice.js"></script>
 
-  <!-- Firebase MUST load first -->
+  <!-- Firebase FIRST -->
   <script type="module" src="firebase.js"></script>
 
-  <!-- Main App Logic -->
+  <!-- Main App (MODULE) -->
   <script type="module" src="script.js"></script>
 
   <!-- PWA -->
