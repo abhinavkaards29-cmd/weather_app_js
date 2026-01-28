@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>Weather AI</title>
 
   <!-- PWA -->
@@ -10,41 +11,51 @@
   <meta name="theme-color" content="#0a84ff" />
 
   <!-- Icons -->
-  <link rel="icon" href="icons/favicon.ico" />
-  <link rel="apple-touch-icon" href="icons/apple-icon-180x180-removebg-preview.png" />
+  <link rel="icon" href="favicon.ico" />
+  <link
+    rel="apple-touch-icon"
+    href="apple-icon-180x180-removebg-preview.png"
+  />
 
   <!-- CSS -->
   <link rel="stylesheet" href="style.css" />
-
 </head>
+
 <body class="clear">
 
-  <!-- Glass Card -->
+  <!-- APP CONTAINER -->
   <main class="app glass">
 
-    <h1 class="title">☁️ Weather AI</h1>
+    <!-- Header -->
+    <header class="header">
+      <h1 class="title">☁️ Weather AI</h1>
+      <p class="subtitle">Smart weather with AI insights</p>
+    </header>
 
     <!-- Search -->
-    <input
-      id="cityInput"
-      type="text"
-      placeholder="Search city, state, country"
-    />
+    <section class="search">
+      <input
+        id="cityInput"
+        type="text"
+        placeholder="Search city, state, country"
+        autocomplete="off"
+      />
 
-    <button class="btn primary" onclick="searchCity()">
-      Search
-    </button>
+      <button class="btn primary" onclick="searchCity()">
+        Search
+      </button>
 
-    <button class="btn glass-btn" onclick="useMyLocation()">
-      📍 Use My Location
-    </button>
+      <button class="btn glass-btn" onclick="useMyLocation()">
+        📍 Use My Location
+      </button>
+    </section>
 
-    <!-- Actions -->
-    <div class="actions">
+    <!-- Theme Controls -->
+    <section class="actions">
       <button class="icon-btn" onclick="setTheme('clear')">☀️</button>
       <button class="icon-btn" onclick="setTheme('clouds')">☁️</button>
       <button class="icon-btn" onclick="setTheme('rain')">🌧️</button>
-    </div>
+    </section>
 
     <!-- Weather Result -->
     <section id="weatherResult" class="result hidden">
@@ -59,26 +70,39 @@
       </div>
     </section>
 
-    <!-- AI -->
-    <button class="btn ai-btn" onclick="runAI()">
-      🤖 AI Weather Insight
-    </button>
+    <!-- AI Section -->
+    <section class="ai">
+      <button class="btn ai-btn" onclick="runAI()">
+        🤖 AI Weather Insight
+      </button>
 
-    <!-- Extra -->
-    <div class="extra">
+      <button class="btn ai-btn" onclick="speakWeather()">
+        🎙 AI Voice
+      </button>
+    </section>
+
+    <!-- Extra Actions -->
+    <section class="extra">
       <button onclick="saveFavorite()">⭐ Save Favorite</button>
       <button onclick="enableAlerts()">🔔 Alerts</button>
-    </div>
+    </section>
 
     <!-- Map -->
-    <div id="map" class="map"></div>
+    <section id="map" class="map"></section>
 
   </main>
 
-  <!-- Scripts -->
+  <!-- Background animations -->
   <script src="background.js"></script>
+
+  <!-- AI Voice -->
   <script src="ai-voice.js"></script>
-  <script src="script.js"></script>
+
+  <!-- Firebase MUST load first -->
+  <script type="module" src="firebase.js"></script>
+
+  <!-- Main App Logic -->
+  <script type="module" src="script.js"></script>
 
   <!-- PWA -->
   <script>
