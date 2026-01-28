@@ -2,45 +2,44 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Weather App</title>
 
-  <!-- Leaflet Map -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+  <!-- Icons -->
+  <link rel="icon" href="favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-icon-180x180-removebg-preview.png">
 
-  <!-- Weather Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.12/css/weather-icons.min.css"/>
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json">
 
-  <link rel="stylesheet" href="style.css" />
+  <!-- Styles -->
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-  <div class="app">
+  <div class="app glass">
     <h1>☁️ Weather</h1>
 
-    <input id="searchInput" placeholder="City, State, Country" />
+    <input id="cityInput" placeholder="Enter city name" />
     <button onclick="searchWeather()">Search</button>
-    <button class="location" onclick="useLocation()">📍 Use My Location</button>
 
-    <div class="themes">
+    <button class="secondary" onclick="useLocation()">📍 Use My Location</button>
+
+    <div class="theme-switch">
       <button onclick="setTheme('light')">☀️</button>
       <button onclick="setTheme('dark')">🌙</button>
-      <button onclick="setTheme('auto')">🌓</button>
+      <button onclick="setTheme('system')">🌓</button>
     </div>
 
-    <div id="weatherBox"></div>
-
-    <h3>5-Day Forecast</h3>
-    <div id="forecast"></div>
-
-    <h3>Map</h3>
-    <div id="map"></div>
-
-    <h3>⭐ Favorites</h3>
-    <ul id="favorites"></ul>
+    <div id="result" class="result"></div>
   </div>
 
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script src="script.js"></script>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js');
+    }
+  </script>
 </body>
 </html>
