@@ -6,57 +6,47 @@
   <title>Weather AI</title>
 
   <link rel="stylesheet" href="style.css" />
-  <link rel="manifest" href="manifest.json" />
-  <meta name="theme-color" content="#0a84ff" />
+  <link rel="icon" href="favicon.ico" />
 </head>
 
-<body class="clear">
+<body>
+  <div class="app glass fade-in">
 
-<main class="app glass">
+    <h1 class="title">☁️ Weather AI</h1>
+    <p class="subtitle">Smart weather with AI insights</p>
 
-  <h1>☁️ Weather AI</h1>
+    <input
+      id="cityInput"
+      placeholder="City, State, Country (e.g. Kolkata, WB, IN)"
+    />
 
-  <input id="cityInput" placeholder="Search city, state, country" />
-  <button onclick="searchCity()">Search</button>
-  <button onclick="useMyLocation()">📍 Use My Location</button>
+    <button class="btn primary" onclick="searchCity()">Search</button>
+    <button class="btn glass-btn" onclick="useMyLocation()">📍 Use My Location</button>
 
-  <div class="actions">
-    <button onclick="setTheme('clear')">☀️</button>
-    <button onclick="setTheme('clouds')">☁️</button>
-    <button onclick="setTheme('rain')">🌧️</button>
+    <div class="themes">
+      <button onclick="setTheme('clear')">☀️</button>
+      <button onclick="setTheme('clouds')">☁️</button>
+      <button onclick="setTheme('rain')">🌧️</button>
+    </div>
+
+    <section id="weather" class="hidden">
+      <h2 id="place"></h2>
+      <div class="temp" id="temp"></div>
+      <div class="desc" id="desc"></div>
+
+      <div class="details">
+        <span id="feels"></span>
+        <span id="humidity"></span>
+        <span id="wind"></span>
+      </div>
+
+      <button class="btn ai" onclick="runAI()">🤖 AI Weather Insight</button>
+      <button class="btn ai" onclick="runVoice()">🎙️ AI Voice</button>
+    </section>
+
   </div>
 
-  <section id="weatherResult" class="hidden">
-    <h2 id="cityName"></h2>
-    <p id="temp"></p>
-    <p id="condition"></p>
-    <p id="feels"></p>
-    <p id="humidity"></p>
-    <p id="wind"></p>
-  </section>
-
-  <button onclick="runAI()">🤖 AI Weather Insight</button>
-  <button onclick="runVoice()">🎤 AI Voice</button>
-
-  <div class="extra">
-    <button onclick="saveFavorite()">⭐ Save Favorite</button>
-    <button onclick="enableAlerts()">🔔 Alerts</button>
-  </div>
-
-</main>
-
-<!-- NORMAL scripts FIRST -->
-<script src="background.js"></script>
-<script src="ai-voice.js"></script>
-
-<!-- MAIN APP (NOT module) -->
-<script src="script.js"></script>
-
-<script>
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("service-worker.js");
-}
-</script>
-
+  <script src="ai-voice.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
