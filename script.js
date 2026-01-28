@@ -1,67 +1,67 @@
 const API_KEY = "21c37b3cf3fc437adbbab13394d14186";
 
-async function searchCity() {
-  const q = document.getElementById("searchInput").value;
-  if (!q) return alert("Enter a place");
+// ======================= SEARCH =======================
 
-  const geo = await fetch(
-    `https://api.openweathermap.org/geo/1.0/direct?q=${q}&limit=1&appid=${API_KEY}`
-  ).then(r => r.json());
-
-  if (!geo[0]) return alert("Place not found");
-
-  loadWeather(geo[0].lat, geo[0].lon, geo[0].name, geo[0].country);
+function searchCity() {
+  const city = document.getElementById("cityInput").value;
+  if (!city) return alert("Enter a location");
+  loadWeatherByCity(city);
 }
 
 function useMyLocation() {
   navigator.geolocation.getCurrentPosition(pos => {
-    loadWeather(pos.coords.latitude, pos.coords.longitude, "My Location", "");
+    loadWeatherByCoords(pos.coords.latitude, pos.coords.longitude);
   });
 }
 
-async function loadWeather(lat, lon, name, country) {
+// ======================= WEATHER =======================
 
-  const weather = await fetch(
+async function loadWeatherByCity(city) {
+  const geo = await fetch(
+    `https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=${API_KEY}`
+  ).then(r => r.json());
+
+  if (!geo.length) return alert("Location not found");
+
+  loadWeatherByCoords(geo[0].lat, geo[0].lon, geo[0].name, geo[0].country);
+}
+
+async function loadWeatherByCoords(lat, lon, name="", country="") {
+
+  const current = await fetch(
     `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`
   ).then(r => r.json());
 
-  const daily = await fetch(
-    `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely,hourly&units=metric&appid=${API_KEY}`
+  const forecast = await fetch(
+    `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`
   ).then(r => r.json());
 
   // CURRENT
-  document.getElementById("place").innerText = `${name} ${country}`;
-  document.getElementById("temp").innerText = Math.round(weather.main.temp) + "°C";
-  document.getElementById("desc").innerText = weather.weather[0].description;
-  document.getElementById("feels").innerText = "Feels: " + weather.main.feels_like + "°C";
-  document.getElementById("humidity").innerText = "Humidity: " + weather.main.humidity + "%";
-  document.getElementById("wind").innerText = "Wind: " + weather.wind.speed + " km/h";
+  document.getElementById("place").innerText =
+    `${current.name || name}, ${country || current.sys.country}`;
 
-  document.getElementById("current").classList.remove("hidden");
+  document.getElementById("temp").innerText =
+    `${Math.round(current.main.temp)}°C`;
 
-  // FORECAST
-  const days = document.getElementById("days");
-  days.innerHTML = "";
+  document.getElementById("desc").innerText =
+    current.weather[0].description;
 
-  daily.daily.slice(0,7).forEach(d => {
-    const day = new Date(d.dt * 1000).toLocaleDateString("en",{weekday:"short"});
-    days.innerHTML += `<div>${day} • ${Math.round(d.temp.max)}° / ${Math.round(d.temp.min)}°</div>`;
-  });
+  document.getElementById("feels").innerText =
+    `Feels: ${Math.round(current.main.feels_like)}°C`;
 
-  document.getElementById("forecast").classList.remove("hidden");
+  document.getElementById("humidity").innerText =
+    `Humidity: ${current.main.humidity}%`;
 
-  // MAP
-  document.getElementById("map").src =
-    `https://maps.google.com/maps?q=${lat},${lon}&z=12&output=embed`;
+  document.getElementById("wind").innerText =
+    `Wind: ${current.wind.speed} km/h`;
 
-  document.getElementById("mapBox").classList.remove("hidden");
-}
+  show("weatherBox");
 
-function saveFavourite() {
-  localStorage.setItem("fav", document.getElementById("place").innerText);
-  alert("Saved as favourite ⭐");
-}
+  // HOURLY
+  const hourly = document.getElementById("hourly");
+  hourly.innerHTML = "";
 
-function setReminder() {
-  alert("Reminder saved (Firebase later)");
-}
+  forecast.list.slice(0,8).forEach(h => {
+    hourly.innerHTML += `
+      <div>
+        ${h.dt_txt.split(" ")[1
