@@ -1,9 +1,9 @@
 {
-  "name": "Weather App",
+  "name": "Weather Glass",
   "short_name": "Weather",
   "start_url": "./",
   "display": "standalone",
-  "background_color": "#0f2027",
+  "background_color": "#020617",
   "theme_color": "#0a84ff",
   "icons": [
     {
