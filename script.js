@@ -139,14 +139,14 @@ function runAI() {
   }
 }
 
-/* =========================
-   EXPOSE TO HTML (CRITICAL)
-========================= */
+// ===============================
+// EXPOSE FUNCTIONS TO HTML
+// ===============================
 window.searchCity = searchCity;
 window.useMyLocation = useMyLocation;
+window.runAI = runAI;
 window.saveFavorite = saveFavorite;
 window.enableAlerts = enableAlerts;
-window.runAI = runAI;
+window.setTheme = setTheme;
 
-/* Needed for theme buttons */
-window.setTheme = window.setTheme || function () {};
+
