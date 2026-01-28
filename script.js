@@ -1,84 +1,68 @@
 const API_KEY = "21c37b3cf3fc437adbbab13394d14186";
 
-let currentCity = "";
+const cityInput = document.getElementById("cityInput");
+const weatherBox = document.getElementById("weatherBox");
 
-/* SEARCH CITY */
-function searchCity() {
-  const city = cityInput.value.trim();
-  if (!city) return alert("Enter city name");
-  fetchWeather(`q=${city}`);
+const placeEl = document.getElementById("place");
+const tempEl = document.getElementById("temp");
+const descEl = document.getElementById("desc");
+const feelsEl = document.getElementById("feels");
+const humidityEl = document.getElementById("humidity");
+const windEl = document.getElementById("wind");
+const mapEl = document.getElementById("map");
+
+let currentLocation = "";
+
+async function searchCity() {
+  const q = cityInput.value.trim();
+  if (!q) return;
+
+  const geo = await fetch(
+    `https://api.openweathermap.org/geo/1.0/direct?q=${q}&limit=1&appid=${API_KEY}`
+  ).then(r => r.json());
+
+  if (!geo.length) return alert("Location not found");
+
+  const { lat, lon, name, state, country } = geo[0];
+  currentLocation = `${name}${state ? ", " + state : ""}, ${country}`;
+
+  loadWeather(lat, lon);
+  loadMap(lat, lon);
 }
 
-/* USE LOCATION */
-function useMyLocation() {
-  navigator.geolocation.getCurrentPosition(
-    pos => fetchWeather(`lat=${pos.coords.latitude}&lon=${pos.coords.longitude}`),
-    () => alert("Location permission denied")
-  );
-}
+async function loadWeather(lat, lon) {
+  const data = await fetch(
+    `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`
+  ).then(r => r.json());
 
-/* FETCH WEATHER */
-async function fetchWeather(query) {
-  try {
-    const res = await fetch(
-      `https://api.openweathermap.org/data/2.5/weather?${query}&units=metric&appid=${API_KEY}`
-    );
+  placeEl.innerText = currentLocation;
+  tempEl.innerText = Math.round(data.main.temp) + "°C";
+  descEl.innerText = data.weather[0].description;
 
-    if (!res.ok) throw new Error("Network error");
-
-    const data = await res.json();
-    renderWeather(data);
-  } catch (e) {
-    alert("Network error");
-  }
-}
-
-/* RENDER */
-function renderWeather(data) {
-  currentCity = data.name;
+  feelsEl.innerText = "Feels " + data.main.feels_like + "°C";
+  humidityEl.innerText = "Humidity " + data.main.humidity + "%";
+  windEl.innerText = "Wind " + data.wind.speed + " km/h";
 
   weatherBox.classList.remove("hidden");
-  mapCard.classList.remove("hidden");
-
-  cityName.textContent = `${data.name}, ${data.sys.country}`;
-  temp.textContent = `${Math.round(data.main.temp)}°C`;
-  condition.textContent = data.weather[0].description;
-
-  feels.textContent = `Feels ${Math.round(data.main.feels_like)}°C`;
-  humidity.textContent = `Humidity ${data.main.humidity}%`;
-  wind.textContent = `Wind ${data.wind.speed} km/h`;
-
-  mapFrame.src =
-    `https://www.google.com/maps?q=${data.coord.lat},${data.coord.lon}&z=10&output=embed`;
 }
 
-/* FAVOURITE */
-function saveFavorite() {
-  if (!currentCity) return;
-  localStorage.setItem("favCity", currentCity);
+function loadMap(lat, lon) {
+  mapEl.src =
+    `https://www.google.com/maps?q=${lat},${lon}&z=13&output=embed`;
+}
+
+function useMyLocation() {
+  navigator.geolocation.getCurrentPosition(pos => {
+    loadWeather(pos.coords.latitude, pos.coords.longitude);
+    loadMap(pos.coords.latitude, pos.coords.longitude);
+  });
+}
+
+function saveFavourite() {
+  localStorage.setItem("favourite", currentLocation);
   alert("Saved ⭐");
 }
 
-/* LOAD FAV */
-window.addEventListener("load", () => {
-  const fav = localStorage.getItem("favCity");
-  if (fav) {
-    cityInput.value = fav;
-    searchCity();
-  }
-});
-
-/* REMINDER */
 function setReminder() {
-  if (!currentCity) return;
-
-  Notification.requestPermission().then(p => {
-    if (p !== "granted") return;
-
-    setTimeout(() => {
-      new Notification("Weather Reminder 🌦️", {
-        body: `Check weather for ${currentCity}`
-      });
-    }, 10 * 60 * 1000);
-  });
+  alert("Reminder feature ready for Firebase ⏰");
 }
