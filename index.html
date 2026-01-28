@@ -4,21 +4,21 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Weather Glass</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css"/>
 </head>
 
 <body>
-  <main class="glass">
+  <main class="app glass">
 
     <h1>☁️ Weather Glass</h1>
 
     <!-- SEARCH -->
-    <input id="searchInput" placeholder="Search city, state, country" />
+    <input id="cityInput" placeholder="Search city, state, country"/>
     <button onclick="searchCity()">Search</button>
     <button class="secondary" onclick="useMyLocation()">📍 Use My Location</button>
 
     <!-- CURRENT WEATHER -->
-    <section id="current" class="card hidden">
+    <section id="weatherBox" class="card hidden">
       <h2 id="place"></h2>
       <div class="temp" id="temp"></div>
       <p id="desc"></p>
@@ -30,10 +30,16 @@
       </div>
     </section>
 
-    <!-- 7 DAY FORECAST -->
-    <section id="forecast" class="card hidden">
+    <!-- HOURLY -->
+    <section id="hourlyBox" class="card hidden">
+      <h3>🕒 Hourly Forecast</h3>
+      <div id="hourly" class="scroll"></div>
+    </section>
+
+    <!-- 7 DAY -->
+    <section id="dailyBox" class="card hidden">
       <h3>📅 7-Day Forecast</h3>
-      <div id="days"></div>
+      <div id="daily" class="scroll"></div>
     </section>
 
     <!-- MAP -->
