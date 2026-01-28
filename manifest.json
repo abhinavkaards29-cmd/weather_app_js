@@ -1,9 +1,15 @@
 {
   "name": "Weather App",
   "short_name": "Weather",
-  "start_url": ".",
+  "start_url": "./",
   "display": "standalone",
-  "background_color": "#000000",
-  "theme_color": "#007aff",
-  "icons": []
+  "background_color": "#0f2027",
+  "theme_color": "#0a84ff",
+  "icons": [
+    {
+      "src": "apple-icon-180x180-removebg-preview.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
 }
