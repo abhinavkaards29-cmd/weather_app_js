@@ -1,152 +1,71 @@
-/* =========================
-   CONFIG
-========================= */
-const WEATHER_KEY = "21c37b3cf3fc437adbbab13394d14186";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Weather AI</title>
 
-/* =========================
-   STATE
-========================= */
-let currentCity = "";
-let currentWeatherText = "";
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#0a84ff" />
 
-/* =========================
-   SEARCH BY CITY
-========================= */
-async function searchCity() {
-  const input = document.getElementById("cityInput");
-  if (!input) return;
+  <!-- Icons -->
+  <link rel="icon" href="favicon.ico" />
+  <link rel="apple-touch-icon" href="apple-icon-180x180-removebg-preview.png" />
 
-  const city = input.value.trim();
-  if (!city) {
-    alert("Enter a city name");
-    return;
-  }
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css" />
+</head>
 
-  fetchWeather(`q=${city}`);
-}
+<body class="clear">
 
-/* =========================
-   USE MY LOCATION
-========================= */
-function useMyLocation() {
-  if (!navigator.geolocation) {
-    alert("Geolocation not supported");
-    return;
-  }
+  <main class="app glass">
+    <h1 class="title">☁️ Weather AI</h1>
 
-  navigator.geolocation.getCurrentPosition(
-    pos => {
-      const { latitude, longitude } = pos.coords;
-      fetchWeather(`lat=${latitude}&lon=${longitude}`);
-    },
-    () => alert("Location permission denied")
-  );
-}
+    <!-- Search -->
+    <input id="cityInput" type="text" placeholder="Search city" />
 
-/* =========================
-   FETCH WEATHER
-========================= */
-async function fetchWeather(query) {
-  try {
-    const res = await fetch(
-      `https://api.openweathermap.org/data/2.5/weather?${query}&units=metric&appid=${WEATHER_KEY}`
-    );
+    <button class="btn primary" onclick="searchCity()">Search</button>
+    <button class="btn glass-btn" onclick="useMyLocation()">📍 Use My Location</button>
 
-    const data = await res.json();
+    <!-- Theme buttons -->
+    <div class="actions">
+      <button onclick="setTheme('clear')">☀️</button>
+      <button onclick="setTheme('clouds')">☁️</button>
+      <button onclick="setTheme('rain')">🌧️</button>
+    </div>
 
-    if (data.cod !== 200) {
-      alert("City not found");
-      return;
+    <!-- Weather result -->
+    <section id="weatherResult" class="hidden">
+      <h2 id="cityName"></h2>
+      <p id="temp"></p>
+      <p id="condition"></p>
+      <p id="feels"></p>
+      <p id="humidity"></p>
+      <p id="wind"></p>
+    </section>
+
+    <!-- AI -->
+    <button class="btn ai-btn" onclick="runAI()">🤖 AI Weather Insight</button>
+
+    <!-- Extras -->
+    <div class="extra">
+      <button onclick="saveFavorite()">⭐ Save Favorite</button>
+      <button onclick="enableAlerts()">🔔 Alerts</button>
+    </div>
+  </main>
+
+  <!-- Scripts (ORDER MATTERS) -->
+  <script src="background.js"></script>
+  <script src="ai-voice.js"></script>
+  <script src="script.js"></script>
+
+  <!-- Service Worker -->
+  <script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("service-worker.js");
     }
+  </script>
 
-    renderWeather(data);
-  } catch (err) {
-    alert("Weather fetch failed");
-    console.error(err);
-  }
-}
-
-/* =========================
-   RENDER WEATHER
-========================= */
-function renderWeather(data) {
-  currentCity = data.name;
-
-  currentWeatherText = `
-Temperature ${Math.round(data.main.temp)}°C.
-Feels like ${Math.round(data.main.feels_like)}°C.
-Humidity ${data.main.humidity} percent.
-Wind speed ${data.wind.speed} kilometers per hour.
-Condition ${data.weather[0].description}.
-`;
-
-  document.getElementById("weatherResult")?.classList.remove("hidden");
-  document.getElementById("cityName").innerText = data.name;
-  document.getElementById("temp").innerText = `${Math.round(data.main.temp)}°C`;
-  document.getElementById("condition").innerText = data.weather[0].description;
-  document.getElementById("feels").innerText = `Feels ${Math.round(
-    data.main.feels_like
-  )}°C`;
-  document.getElementById("humidity").innerText = `Humidity ${data.main.humidity}%`;
-  document.getElementById("wind").innerText = `Wind ${data.wind.speed} km/h`;
-
-  // 🔥 Connect background animation safely
-  if (typeof setWeatherBackground === "function") {
-    setWeatherBackground(data.weather[0].main.toLowerCase());
-  }
-}
-
-/* =========================
-   FAVORITES (LOCAL)
-========================= */
-function saveFavorite() {
-  if (!currentCity) {
-    alert("Search a city first");
-    return;
-  }
-
-  localStorage.setItem("favoriteCity", currentCity);
-  alert("Favorite saved ⭐");
-}
-
-/* =========================
-   ALERTS
-========================= */
-function enableAlerts() {
-  if (!("Notification" in window)) {
-    alert("Notifications not supported");
-    return;
-  }
-
-  Notification.requestPermission().then(permission => {
-    if (permission === "granted") {
-      new Notification("Weather alerts enabled 🌦️");
-    }
-  });
-}
-
-/* =========================
-   AI WEATHER VOICE
-========================= */
-function runAI() {
-  if (!currentWeatherText) {
-    alert("Search weather first");
-    return;
-  }
-
-  if (typeof speak === "function") {
-    speak(`Weather update for ${currentCity}. ${currentWeatherText}`);
-  }
-}
-
-/* =========================
-   EXPOSE TO HTML (CRITICAL)
-========================= */
-window.searchCity = searchCity;
-window.useMyLocation = useMyLocation;
-window.saveFavorite = saveFavorite;
-window.enableAlerts = enableAlerts;
-window.runAI = runAI;
-
-/* Needed for theme buttons */
-window.setTheme = window.setTheme || function () {};
+</body>
+</html>
