@@ -1,60 +1,58 @@
 * {
   box-sizing: border-box;
-  font-family: system-ui, sans-serif;
+  font-family: system-ui, -apple-system, sans-serif;
 }
 
 body {
   margin: 0;
-  background: linear-gradient(120deg, #0f2027, #203a43, #2c5364);
   min-height: 100vh;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
   display: flex;
   justify-content: center;
   align-items: center;
+  color: white;
 }
 
 .app {
-  width: 360px;
+  width: 380px;
   padding: 20px;
 }
 
 .glass {
+  background: rgba(255,255,255,0.14);
   backdrop-filter: blur(18px);
-  background: rgba(255,255,255,0.12);
-  border-radius: 20px;
-  color: #fff;
+  border-radius: 22px;
+  box-shadow: 0 30px 60px rgba(0,0,0,.4);
 }
 
 h1 {
   text-align: center;
 }
 
-input {
+input, button {
   width: 100%;
   padding: 12px;
+  margin-top: 10px;
   border-radius: 12px;
   border: none;
-  margin-bottom: 10px;
 }
 
 button {
-  width: 100%;
-  padding: 12px;
-  border-radius: 12px;
-  border: none;
-  margin-bottom: 10px;
+  background: #0a84ff;
+  color: white;
+  font-size: 15px;
   cursor: pointer;
 }
 
 button.secondary {
-  background: rgba(255,255,255,0.2);
-  color: white;
+  background: rgba(255,255,255,0.25);
 }
 
 .card {
-  background: rgba(0,0,0,0.25);
+  margin-top: 16px;
   padding: 15px;
-  border-radius: 16px;
-  margin-top: 12px;
+  border-radius: 18px;
+  background: rgba(255,255,255,0.15);
 }
 
 .hidden {
@@ -62,39 +60,18 @@ button.secondary {
 }
 
 .temp {
-  font-size: 48px;
-  font-weight: bold;
+  font-size: 46px;
+  font-weight: 300;
 }
 
-.details span {
-  display: block;
-  font-size: 14px;
-  margin-top: 4px;
-}
-
-.scroll {
-  display: flex;
-  gap: 10px;
-  overflow-x: auto;
-}
-
-.scroll div {
-  min-width: 70px;
-  padding: 8px;
-  background: rgba(255,255,255,0.15);
-  border-radius: 10px;
-  text-align: center;
+#days div {
+  margin-top: 6px;
+  opacity: 0.9;
 }
 
 iframe {
   width: 100%;
-  height: 200px;
+  height: 220px;
   border-radius: 14px;
   border: none;
-}
-
-.actions {
-  display: flex;
-  gap: 10px;
-  margin-top: 12px;
 }
