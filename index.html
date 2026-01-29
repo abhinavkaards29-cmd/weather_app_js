@@ -2,53 +2,79 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Weather Glass</title>
 
+  <!-- Styles -->
+  <link rel="stylesheet" href="./style.css" />
+
   <!-- PWA -->
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#0a84ff">
-
-  <!-- Icons -->
-  <link rel="icon" href="icons/icon-192.png">
-  <link rel="apple-touch-icon" href="icons/icon-192.png">
-
-  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="icon" href="./favicon.ico" />
 </head>
 
 <body>
   <main class="app glass">
 
+    <!-- HEADER -->
     <h1>☁️ Weather Glass</h1>
 
-    <input id="cityInput" placeholder="Search city / place">
-    <button onclick="searchCity()">Search</button>
-    <button class="secondary" onclick="useMyLocation()">📍 My Location</button>
+    <!-- SEARCH -->
+    <section class="search">
+      <input
+        id="cityInput"
+        type="text"
+        placeholder="Search city, state, country"
+      />
+      <button onclick="searchCity()">Search</button>
+      <button class="secondary" onclick="useMyLocation()">📍 Use My Location</button>
+    </section>
 
-    <!-- CURRENT -->
-    <section id="current" class="card hidden">
+    <!-- CURRENT WEATHER -->
+    <section id="weatherBox" class="card hidden">
       <h2 id="place"></h2>
       <div class="temp" id="temp"></div>
       <p id="desc"></p>
-      <p id="details"></p>
+
+      <div class="details">
+        <span id="feels"></span>
+        <span id="humidity"></span>
+        <span id="wind"></span>
+      </div>
+    </section>
+
+    <!-- HOURLY -->
+    <section id="hourlyBox" class="card hidden">
+      <h3>🕒 Hourly Forecast</h3>
+      <div id="hourly" class="scroll"></div>
     </section>
 
     <!-- 7 DAY -->
-    <section id="forecast" class="card hidden">
+    <section id="dailyBox" class="card hidden">
       <h3>📅 7-Day Forecast</h3>
-      <div id="days"></div>
+      <div id="daily" class="scroll"></div>
     </section>
 
     <!-- MAP -->
     <section id="mapBox" class="card hidden">
-      <h3>🗺 Map</h3>
-      <iframe id="map"></iframe>
+      <h3>📍 Location</h3>
+      <iframe
+        id="map"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+      ></iframe>
+    </section>
+
+    <!-- ACTIONS -->
+    <section class="actions">
+      <button onclick="saveFavourite()">⭐ Favourite</button>
+      <button onclick="setReminder()">⏰ Reminder</button>
     </section>
 
   </main>
 
-  <script src="./script.js" defer></script>
-  <!-- Service Worker -->
-  
+  <!-- MAIN SCRIPT (THIS IS CRITICAL) -->
+  <script src="./script.js"></script>
+
 </body>
 </html>
