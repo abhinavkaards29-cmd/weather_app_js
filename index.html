@@ -4,7 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Weather Glass</title>
-  <link rel="stylesheet" href="style.css"/>
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0a84ff">
+
+  <!-- Icons -->
+  <link rel="icon" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -12,50 +21,39 @@
 
     <h1>☁️ Weather Glass</h1>
 
-    <!-- SEARCH -->
-    <input id="cityInput" placeholder="Search city, state, country"/>
+    <input id="cityInput" placeholder="Search city / place">
     <button onclick="searchCity()">Search</button>
-    <button class="secondary" onclick="useMyLocation()">📍 Use My Location</button>
+    <button class="secondary" onclick="useMyLocation()">📍 My Location</button>
 
-    <!-- CURRENT WEATHER -->
-    <section id="weatherBox" class="card hidden">
+    <!-- CURRENT -->
+    <section id="current" class="card hidden">
       <h2 id="place"></h2>
       <div class="temp" id="temp"></div>
       <p id="desc"></p>
-
-      <div class="details">
-        <span id="feels"></span>
-        <span id="humidity"></span>
-        <span id="wind"></span>
-      </div>
-    </section>
-
-    <!-- HOURLY -->
-    <section id="hourlyBox" class="card hidden">
-      <h3>🕒 Hourly Forecast</h3>
-      <div id="hourly" class="scroll"></div>
+      <p id="details"></p>
     </section>
 
     <!-- 7 DAY -->
-    <section id="dailyBox" class="card hidden">
+    <section id="forecast" class="card hidden">
       <h3>📅 7-Day Forecast</h3>
-      <div id="daily" class="scroll"></div>
+      <div id="days"></div>
     </section>
 
     <!-- MAP -->
     <section id="mapBox" class="card hidden">
-      <h3>📍 Location</h3>
-      <iframe id="map" loading="lazy"></iframe>
+      <h3>🗺 Map</h3>
+      <iframe id="map"></iframe>
     </section>
-
-    <!-- ACTIONS -->
-    <div class="actions">
-      <button onclick="saveFavourite()">⭐ Favourite</button>
-      <button onclick="setReminder()">⏰ Reminder</button>
-    </div>
 
   </main>
 
   <script src="script.js"></script>
+
+  <!-- Service Worker -->
+  <script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("service-worker.js");
+    }
+  </script>
 </body>
 </html>
