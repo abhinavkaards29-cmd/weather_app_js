@@ -2,38 +2,24 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Weather Glass</title>
-
-  <!-- Styles -->
-  <link rel="stylesheet" href="./style.css" />
-
-  <!-- PWA -->
-  <link rel="manifest" href="./manifest.json" />
-  <link rel="icon" href="./favicon.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
   <main class="app glass">
 
-    <!-- HEADER -->
     <h1>☁️ Weather Glass</h1>
 
-    <!-- SEARCH -->
-    <section class="search">
-      <input
-        id="cityInput"
-        type="text"
-        placeholder="Search city, state, country"
-      />
-      <button onclick="searchCity()">Search</button>
-      <button class="secondary" onclick="useMyLocation()">📍 Use My Location</button>
-    </section>
+    <input id="cityInput" placeholder="Search city, state, country" />
+    <button onclick="searchCity()">Search</button>
+    <button onclick="useMyLocation()">📍 Use My Location</button>
 
     <!-- CURRENT WEATHER -->
     <section id="weatherBox" class="card hidden">
       <h2 id="place"></h2>
-      <div class="temp" id="temp"></div>
+      <div id="temp"></div>
       <p id="desc"></p>
 
       <div class="details">
@@ -43,38 +29,33 @@
       </div>
     </section>
 
-    <!-- HOURLY -->
-    <section id="hourlyBox" class="card hidden">
-      <h3>🕒 Hourly Forecast</h3>
-      <div id="hourly" class="scroll"></div>
-    </section>
-
-    <!-- 7 DAY -->
+    <!-- 7 DAY FORECAST -->
     <section id="dailyBox" class="card hidden">
       <h3>📅 7-Day Forecast</h3>
-      <div id="daily" class="scroll"></div>
+      <div id="daily"></div>
     </section>
 
     <!-- MAP -->
     <section id="mapBox" class="card hidden">
-      <h3>📍 Location</h3>
+      <h3>🗺 Location</h3>
       <iframe
         id="map"
-        loading="lazy"
-        referrerpolicy="no-referrer-when-downgrade"
-      ></iframe>
+        width="100%"
+        height="250"
+        style="border:0"
+        loading="lazy">
+      </iframe>
     </section>
 
     <!-- ACTIONS -->
-    <section class="actions">
+    <div class="actions">
       <button onclick="saveFavourite()">⭐ Favourite</button>
       <button onclick="setReminder()">⏰ Reminder</button>
-    </section>
+    </div>
 
   </main>
 
-  <!-- MAIN SCRIPT (THIS IS CRITICAL) -->
-  <script src="./script.js"></script>
-
+  <!-- IMPORTANT: NORMAL SCRIPT (NOT MODULE) -->
+  <script src="script.js"></script>
 </body>
 </html>
