@@ -1,34 +1,32 @@
 const API_KEY = "21c37b3cf3fc437adbbab13394d14186";
 
-// ======================= SEARCH =======================
-
+/* BUTTONS */
 function searchCity() {
   const city = document.getElementById("cityInput").value;
-  if (!city) return alert("Enter a location");
-  loadWeatherByCity(city);
+  if (!city) return alert("Enter a place name");
+  fetchByName(city);
 }
 
 function useMyLocation() {
   navigator.geolocation.getCurrentPosition(pos => {
-    loadWeatherByCoords(pos.coords.latitude, pos.coords.longitude);
+    fetchAll(pos.coords.latitude, pos.coords.longitude);
   });
 }
 
-// ======================= WEATHER =======================
-
-async function loadWeatherByCity(city) {
+/* SEARCH → LAT/LON */
+async function fetchByName(name) {
   const geo = await fetch(
-    `https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=${API_KEY}`
+    `https://api.openweathermap.org/geo/1.0/direct?q=${name}&limit=1&appid=${API_KEY}`
   ).then(r => r.json());
 
-  if (!geo.length) return alert("Location not found");
-
-  loadWeatherByCoords(geo[0].lat, geo[0].lon, geo[0].name, geo[0].country);
+  if (!geo.length) return alert("Place not found");
+  fetchAll(geo[0].lat, geo[0].lon, geo[0].name, geo[0].country);
 }
 
-async function loadWeatherByCoords(lat, lon, name="", country="") {
+/* WEATHER + FORECAST */
+async function fetchAll(lat, lon, name="", country="") {
 
-  const current = await fetch(
+  const weather = await fetch(
     `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`
   ).then(r => r.json());
 
@@ -38,30 +36,50 @@ async function loadWeatherByCoords(lat, lon, name="", country="") {
 
   // CURRENT
   document.getElementById("place").innerText =
-    `${current.name || name}, ${country || current.sys.country}`;
+    `${weather.name || name}, ${country || weather.sys.country}`;
 
   document.getElementById("temp").innerText =
-    `${Math.round(current.main.temp)}°C`;
+    Math.round(weather.main.temp) + "°C";
 
   document.getElementById("desc").innerText =
-    current.weather[0].description;
+    weather.weather[0].description;
 
-  document.getElementById("feels").innerText =
-    `Feels: ${Math.round(current.main.feels_like)}°C`;
+  document.getElementById("details").innerText =
+    `Feels ${weather.main.feels_like}°C • Humidity ${weather.main.humidity}% • Wind ${weather.wind.speed} km/h`;
 
-  document.getElementById("humidity").innerText =
-    `Humidity: ${current.main.humidity}%`;
+  show("current");
 
-  document.getElementById("wind").innerText =
-    `Wind: ${current.wind.speed} km/h`;
+  // 7 DAY
+  const daysEl = document.getElementById("days");
+  daysEl.innerHTML = "";
 
-  show("weatherBox");
+  const daily = {};
+  forecast.list.forEach(item => {
+    const d = item.dt_txt.split(" ")[0];
+    if (!daily[d]) daily[d] = item;
+  });
 
-  // HOURLY
-  const hourly = document.getElementById("hourly");
-  hourly.innerHTML = "";
-
-  forecast.list.slice(0,8).forEach(h => {
-    hourly.innerHTML += `
+  Object.values(daily).slice(0,7).forEach(d => {
+    daysEl.innerHTML += `
       <div>
-        ${h.dt_txt.split(" ")[1
+        ${new Date(d.dt_txt).toLocaleDateString("en",{weekday:"short"})}
+        : ${Math.round(d.main.temp)}°C
+      </div>`;
+  });
+
+  show("forecast");
+
+  // MAP
+  document.getElementById("map").src =
+    `https://maps.google.com/maps?q=${lat},${lon}&z=12&output=embed`;
+
+  show("mapBox");
+}
+
+function show(id) {
+  document.getElementById(id).classList.remove("hidden");
+}
+
+/* GLOBAL SAFETY */
+window.searchCity = searchCity;
+window.useMyLocation = useMyLocation;
